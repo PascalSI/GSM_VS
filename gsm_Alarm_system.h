@@ -276,6 +276,7 @@ prog_char AT_CGMM[]			= "AT+CGMM";
 prog_char AT_CCID[]			= "AT+CCID";
 prog_char AT_IFC[]			= "AT+IFC=2,2";
 prog_char ATD101[]			= "ATD*101#";
+prog_char ATD_PLUS[]		= "ATD+";
 
 prog_char AT_CUSD101[]		= "AT+CUSD=1,\"";
 // SMS
@@ -320,6 +321,14 @@ extern uint8_t WebSession;
 uint8_t CommandModeDestination,GSM_ReStartN;
 int32_t Ballance;
 uint8_t numOfCheckBallanceRetry=0;
+
+uint8_t Message[3];  // 
+uint8_t GSMBusyState=0; //Состояние "автомата дозвона" 0 - автомат свободен, 1 - занят 
+void GSM_StartCalling(uint8_t inputN,uint8_t abonentN){
+	Message[0]=1;
+	Message[1]=inputN;
+	Message[2]=abonentN;
+}
 // Auto
 enum {
 	GSM_PowerOn,//0
@@ -335,7 +344,19 @@ enum {
 	GSM_SEND_CLCC1,		GSM_WAIT_CLCC_OK,	//10,11
 	GSM_SEND_DDET101,	GSM_WAIT_DDET101_OK,//12,13
 
-	GSM_IDLE,//14
+	GSM_WAIT_MESSAGE,//14
+	GSM_SEND_ATD,		GSM_WAIT_ATD_OK,  //15,16
+	GSM_WAIT_CCLC_2,	//17
+	GSM_WAIT_CCLC_3,	//18
+	GSM_WAIT_CCLC_0,	//19
+	GSM_SEND_PLAY_ALARM_FILE,			GSM_WAIT_PLAY_ALARM_FILE_OK,			GSM_WAIT_PLAY_ALARM_FILE_CREC_0,	//20,21,22
+	GSM_SEND_PLAY_CONFIRMREQUEST_FILE,	GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK,	GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_CREC_0,	//23,24,25
+	GSM_WAIT_CONFIRMRESPONSE,		//26,27,28
+	GSM_SEND_PLAY_CONFIRM_FILE,			GSM_WAIT_PLAY_CONFIRM_FILE_OK,			GSM_WAIT_PLAY_CONFIRM_FILE_CREC_0,	//29,30,31
+	GSM_SEND_PLAY_NOTCONFIRM_FILE,		GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK,		GSM_WAIT_PLAY_NOTCONFIRMT_FILE_CREC_0,	//32,33,34
+	GSM_SEND_ATH,//35
+	GSM_WAIT_CCLC_6,//36
+	GSM_WAIT_DISCONNECT_CAUSE,//37
 
 	GSM_SEND_CMGF,		GSM_WAIT_CMGF_OK,
 	GSM_SEND_CSMP,		GSM_WAIT_CSMP_OK,
@@ -972,10 +993,28 @@ inline static void GSM_Auto(){
 		case GSM_WAIT_DDET101_OK:
 			if(GSM_Wait_Response_P(RESP_OK, GSM_ReStart1)) GSM_State++;
 			break;
-		case GSM_IDLE:
+		case GSM_WAIT_MESSAGE:
+			if(Message[0]==1)
+			{
+				Message[0]=0;
+				GSM_State = GSM_SEND_ATD;
+			}
+			break;
+		case GSM_SEND_ATD:
+			sprintf_P(GSM_TxStr, ATD_PLUS);	GSMTxSz = strlen_P(ATD_PLUS);
+			erbl(GSM_TxStr+GSMTxSz, CALL_Number+Message[1], MaxTelephN);
+			GSMTxSz+=MaxTelephN-1;
+			const char c=';';
+			sprintf(GSM_TxStr+GSMTxSz,&c);GSMTxSz++;
+			sprintf(GSM_TxStr + GSMTxSz, "\r");	GSMTxSz = GSMTxSz+1;
+			GSM_SendFirstChar();
+			GSM_State=GSM_WAIT_MESSAGE;
 			break;
 
 
+
+
+///------------------------Для СМС/Интернет (пока не задействовано)
 		case GSM_SEND_CMGF:
 			GSM_Execute_Command(AT_CMGF,100*GSM_DEBUG_DELAY); GSM_State++;
 			break;
