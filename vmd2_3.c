@@ -107,7 +107,7 @@ ApplCycle(void)
 void
 StartKey(void)
 {	
-	GSM_StartCalling(0,1);
+	GSM_StartCalling(0,12);
 }
 
 // ~~~~~~~~~~

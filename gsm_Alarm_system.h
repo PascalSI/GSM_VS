@@ -253,6 +253,7 @@ prog_char RESP_CLOSE_OK[] = "CLOSE OK";
 prog_char RESP_CLOSE_OK_FAST[] = "x, CLOSE OK";
 prog_char RESP_CSQ[] = "+CSQ:";
 prog_char RESP_SHUT_OK[] = "SHUT OK";
+prog_char RESP_CREC_0[] = "+CREC: 0";
 
 prog_char ESC_SEQ[] = "+++";
 
@@ -349,11 +350,11 @@ enum {
 	GSM_WAIT_CCLC_2,	//17
 	GSM_WAIT_CCLC_3,	//18
 	GSM_WAIT_CCLC_0,	//19
-	GSM_SEND_PLAY_ALARM_FILE,			GSM_WAIT_PLAY_ALARM_FILE_OK,			GSM_WAIT_PLAY_ALARM_FILE_CREC_0,	//20,21,22
+	GSM_SEND_PLAY_ALARM_FILE,			GSM_WAIT_PLAY_ALARM_FILE_OK,			GSM_WAIT_PLAY_ALARM_FILE_CREC_0,			//20,21,22
 	GSM_SEND_PLAY_CONFIRMREQUEST_FILE,	GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK,	GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_CREC_0,	//23,24,25
-	GSM_WAIT_CONFIRMRESPONSE,		//26,27,28
-	GSM_SEND_PLAY_CONFIRM_FILE,			GSM_WAIT_PLAY_CONFIRM_FILE_OK,			GSM_WAIT_PLAY_CONFIRM_FILE_CREC_0,	//29,30,31
-	GSM_SEND_PLAY_NOTCONFIRM_FILE,		GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK,		GSM_WAIT_PLAY_NOTCONFIRMT_FILE_CREC_0,	//32,33,34
+	GSM_WAIT_CONFIRMRESPONSE,			GSM_SEND_CREC_5, 						GSM_WAIT_CREC_0,							//26,27,28
+	GSM_SEND_PLAY_CONFIRM_FILE,			GSM_WAIT_PLAY_CONFIRM_FILE_OK,			GSM_WAIT_PLAY_CONFIRM_FILE_CREC_0,			//29,30,31
+	GSM_SEND_PLAY_NOTCONFIRM_FILE,		GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK,		GSM_WAIT_PLAY_NOTCONFIRM_FILE_CREC_0,		//32,33,34
 	GSM_SEND_ATH,//35
 	GSM_WAIT_CCLC_6,//36
 	GSM_WAIT_DISCONNECT_CAUSE,//37
@@ -925,6 +926,21 @@ uint8_t GSM_GotoNextVega(void){
  return 0;
 }
 uint8_t counter=0;
+uint8_t analize_DTMF(){
+	if((strstr_P(GSM_RxStr, PSTR("+DTMF: 1")) != NULL) ){
+		StartTimer16(TD_GSM,1000);
+		GSM_State = GSM_SEND_CREC_5;
+		return 1;
+	}
+	if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6")) != NULL) ){
+		StartTimer16(TD_GSM,2000);
+		GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
+		return 1;
+	}
+	return 0;
+}
+uint8_t ConfirmState = 0;
+uint8_t RequestRepeatCounter = 0;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~
 inline static void GSM_Auto(){
@@ -997,6 +1013,8 @@ inline static void GSM_Auto(){
 			if(Message[0]==1)
 			{
 				Message[0]=0;
+				ConfirmState=0;
+				ConfirmState = 0;
 				GSM_State = GSM_SEND_ATD;
 			}
 			break;
@@ -1008,7 +1026,249 @@ inline static void GSM_Auto(){
 			sprintf(GSM_TxStr+GSMTxSz,&c);GSMTxSz++;
 			sprintf(GSM_TxStr + GSMTxSz, "\r");	GSMTxSz = GSMTxSz+1;
 			GSM_SendFirstChar();
-			GSM_State=GSM_WAIT_MESSAGE;
+			GSM_State = GSM_WAIT_ATD_OK;
+			StartTimer16(TD_GSM, 1000);
+			break;
+		case GSM_WAIT_ATD_OK:
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_MESSAGE)) GSM_State = GSM_WAIT_CCLC_2;
+			StartTimer16(TD_GSM, 1000);
+			break;
+		case GSM_WAIT_CCLC_2:
+			if(GetStringFromFIFO()){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,2,")) != NULL) ){
+					StartTimer16(TD_GSM, 2000);
+					GSM_State = GSM_WAIT_CCLC_3;
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_MESSAGE;
+			}
+			break;
+		case GSM_WAIT_CCLC_3:
+			if(GetStringFromFIFO()){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL) ){
+					StartTimer16(TD_GSM, 6000);
+					GSM_State = GSM_WAIT_MESSAGE;
+					break;
+				}
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,3,")) != NULL) ){
+					StartTimer16(TD_GSM, 6000);
+					GSM_State = GSM_WAIT_CCLC_0;
+					break;
+				}
+
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_MESSAGE;
+			}
+			break;
+		case GSM_WAIT_CCLC_0:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,0,")) != NULL) ){
+					RequestRepeatCounter = 0;
+					GSM_State = GSM_SEND_PLAY_ALARM_FILE;
+					break;
+				}
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL) ){
+					StartTimer16(TD_GSM, 6000);
+					GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_MESSAGE;
+			}
+			break;
+		case GSM_SEND_PLAY_ALARM_FILE: 
+			RequestRepeatCounter++;
+			sprintf_P(GSM_TxStr, PSTR("AT+CREC=4,\"C:\\User\\Alarm"));
+			GSMTxSz=24;
+			sprintf(GSM_TxStr+GSMTxSz,"%u",Message[2]);
+			if(Message[2]>9){
+				GSMTxSz+=2;
+			}
+			else{
+				GSMTxSz++;
+			};
+			sprintf_P(GSM_TxStr+GSMTxSz, PSTR(".amr\",0,100\r"));
+			GSMTxSz += 12;
+			GSM_SendFirstChar();
+			GSM_State = GSM_WAIT_PLAY_ALARM_FILE_OK;
+			StartTimer16(TD_GSM, 1000);
+			break;
+		case GSM_WAIT_PLAY_ALARM_FILE_OK:
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_MESSAGE)) 
+				{
+					GSM_State = GSM_WAIT_PLAY_ALARM_FILE_CREC_0;
+					StartTimer16(TD_GSM, 20000);
+				}
+			break;
+		case GSM_WAIT_PLAY_ALARM_FILE_CREC_0:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("+CREC: 0")) != NULL) ){
+					GSM_State = GSM_SEND_PLAY_CONFIRMREQUEST_FILE;
+					break;
+				}
+				if(analize_DTMF()){
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_CONFIRMRESPONSE;
+			}
+			break;
+		case GSM_SEND_PLAY_CONFIRMREQUEST_FILE: 
+			sprintf_P(GSM_TxStr, PSTR("AT+CREC=4,\"C:\\User\\ConfirmRequest.amr\",0,100\r"));
+			GSMTxSz=45;
+			GSM_SendFirstChar();
+			GSM_State = GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK;
+			StartTimer16(TD_GSM, 1000);
+			break;
+		case GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK:
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK)) 
+				{
+					GSM_State = GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_CREC_0;
+					StartTimer16(TD_GSM, 20000);
+				}
+			break;
+		case GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_CREC_0:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("+CREC: 0")) != NULL) ){
+					GSM_State = GSM_WAIT_CONFIRMRESPONSE;
+					StartTimer16(TD_GSM, 200);
+					break;
+				}
+				if(analize_DTMF()){
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_CONFIRMRESPONSE;
+				StartTimer16(TD_GSM, 200);
+			}
+			break;
+		case GSM_WAIT_CONFIRMRESPONSE:
+			if(GetStringFromFIFO()){
+				if(analize_DTMF()){
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				if(RequestRepeatCounter<4){
+				GSM_State = GSM_SEND_PLAY_ALARM_FILE;
+				}
+				else{
+				GSM_State = GSM_SEND_PLAY_NOTCONFIRM_FILE;				
+				}
+			}
+
+			break;
+		case GSM_SEND_CREC_5:
+			sprintf_P(GSM_TxStr, PSTR("AT+CREC=5\r"));
+			GSMTxSz=10;
+			GSM_State = GSM_WAIT_CREC_0;
+			StartTimer16(TD_GSM, 1000);
+			GSM_SendFirstChar();
+			break;
+		case GSM_WAIT_CREC_0:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("+CREC: 0")) != NULL) ){
+					GSM_State = GSM_SEND_PLAY_CONFIRM_FILE;
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_SEND_PLAY_CONFIRM_FILE;
+			}
+
+			break;
+
+		case GSM_SEND_PLAY_CONFIRM_FILE: 
+			ConfirmState = 1;
+			sprintf_P(GSM_TxStr, PSTR("AT+CREC=4,\"C:\\User\\Confirm.amr\",0,100\r"));
+			GSMTxSz=38;
+			GSM_SendFirstChar();
+			GSM_State = GSM_WAIT_PLAY_CONFIRM_FILE_OK;
+			StartTimer16(TD_GSM, 2000);
+			break;
+		case GSM_WAIT_PLAY_CONFIRM_FILE_OK:
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_PLAY_CONFIRM_FILE_OK)) 
+				{
+					GSM_State = GSM_WAIT_PLAY_CONFIRM_FILE_CREC_0;
+					StartTimer16(TD_GSM, 20000);
+				}
+			break;
+		case GSM_WAIT_PLAY_CONFIRM_FILE_CREC_0:
+			if(GSM_Wait_Response_P(RESP_CREC_0, GSM_SEND_ATD)) 
+			{
+				GSM_State = GSM_SEND_ATH;
+				StartTimer16(TD_GSM, 10000);
+			}
+			break;
+		case GSM_SEND_PLAY_NOTCONFIRM_FILE: 
+			sprintf_P(GSM_TxStr, PSTR("AT+CREC=4,\"C:\\User\\NotConfirm.amr\",0,100\r"));
+			GSMTxSz = 41;
+			GSM_SendFirstChar();
+			GSM_State = GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK;
+			StartTimer16(TD_GSM, 1000);
+			break;
+		case GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK:
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_PLAY_NOTCONFIRM_FILE_OK)) 
+				{
+					GSM_State = GSM_WAIT_PLAY_NOTCONFIRM_FILE_CREC_0;
+					StartTimer16(TD_GSM, 20000);
+				}
+			break;
+		case GSM_WAIT_PLAY_NOTCONFIRM_FILE_CREC_0:
+			if(GSM_Wait_Response_P(RESP_CREC_0, GSM_SEND_ATD)) 
+			{
+				GSM_State = GSM_SEND_ATH;
+				StartTimer16(TD_GSM, 10000);
+			}
+			break;	
+		case GSM_SEND_ATH:
+			sprintf_P(GSM_TxStr, PSTR("ATH\r"));
+			GSMTxSz = 4;
+			GSM_SendFirstChar();
+			GSM_State = GSM_WAIT_CCLC_6;
+			StartTimer16(TD_GSM, 1000);
+			break;	
+		case GSM_WAIT_CCLC_6:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL) ){
+					GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
+					StartTimer16(TD_GSM, 10000);
+					break;
+				}
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_MESSAGE;
+			}
+			break;
+		case GSM_WAIT_DISCONNECT_CAUSE:
+			if(GetStringFromFIFO()){
+				if((strstr_P(GSM_RxStr, PSTR("OK")) != NULL) ){
+					GSM_State = GSM_WAIT_MESSAGE;
+
+					break;
+				}
+				if((strstr_P(GSM_RxStr, PSTR("BUSY")) != NULL) ){
+					GSM_State = GSM_WAIT_MESSAGE;
+
+					break;
+				}
+				if((strstr_P(GSM_RxStr, PSTR("NO CARRIER")) != NULL) ){
+					GSM_State = GSM_WAIT_MESSAGE;
+
+					break;
+				}
+				GSM_State = GSM_WAIT_MESSAGE;
+				break;
+			}
+			if(Timer16Stopp(TD_GSM)){
+				GSM_State = GSM_WAIT_MESSAGE;
+			}
 			break;
 
 
