@@ -346,7 +346,7 @@ enum {
 	GSM_SEND_DDET101,	GSM_WAIT_DDET101_OK,//12,13
 
 	GSM_WAIT_MESSAGE,//14
-	GSM_SEND_ATD,		GSM_WAIT_ATD_OK,  //15,16
+	GSM_SEND_ATD,						GSM_WAIT_ATD_OK,  //15,16
 	GSM_WAIT_CCLC_2,	//17
 	GSM_WAIT_CCLC_3,	//18
 	GSM_WAIT_CCLC_0,	//19
@@ -368,7 +368,7 @@ enum {
 
 	GSM_SEND_CGATT,		GSM_WAIT_CGATT_OK,
 	GSM_SEND_CIPCSGP,	GSM_WAIT_CIPCSGP_OK,
-		GSM_SEND_CIPTKA,	GSM_WAIT_CIPTKA_OK,
+	GSM_SEND_CIPTKA,	GSM_WAIT_CIPTKA_OK,
 	GSM_SEND_CSTT,		GSM_WAIT_CSTT_OK,
 	GSM_SEND_CIICR,		GSM_WAIT_CIICR_OK,
 
@@ -537,7 +537,7 @@ uint16_t TCP_CONNECT_timeout EEMEM = 7500;
 
 #ifndef SMS_NUMBER_INIT
 	#define SMS_NUMBER_INIT {"000000000000", "000000000000", "000000000000"}
-	#define CALL_NUMBER_INIT {"380633232300", "000000000000", "000000000000"}
+	#define CALL_NUMBER_INIT {"380633232300", "380938749645", "380967111434"}
 #endif
 char SMS_Number[MaxTelephDirSz][MaxTelephN] EEMEM = SMS_NUMBER_INIT;
 char CALL_Number[MaxTelephDirSz][MaxTelephN] EEMEM = CALL_NUMBER_INIT;
@@ -932,7 +932,7 @@ uint8_t analize_DTMF(){
 		GSM_State = GSM_SEND_CREC_5;
 		return 1;
 	}
-	if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6")) != NULL) ){
+	if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 2,0,6")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 3,0,6")) != NULL) ){
 		StartTimer16(TD_GSM,2000);
 		GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
 		return 1;
@@ -1035,7 +1035,7 @@ inline static void GSM_Auto(){
 			break;
 		case GSM_WAIT_CCLC_2:
 			if(GetStringFromFIFO()){
-				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,2,")) != NULL) ){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,2,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 2,0,2,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 3,0,2,")) != NULL) ){
 					StartTimer16(TD_GSM, 2000);
 					GSM_State = GSM_WAIT_CCLC_3;
 					break;
@@ -1047,12 +1047,12 @@ inline static void GSM_Auto(){
 			break;
 		case GSM_WAIT_CCLC_3:
 			if(GetStringFromFIFO()){
-				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL) ){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 2,0,6,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 3,0,6,")) != NULL) ){
 					StartTimer16(TD_GSM, 6000);
 					GSM_State = GSM_WAIT_MESSAGE;
 					break;
 				}
-				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,3,")) != NULL) ){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,3,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 2,0,3,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 3,0,3,")) != NULL) ){
 					StartTimer16(TD_GSM, 6000);
 					GSM_State = GSM_WAIT_CCLC_0;
 					break;
@@ -1065,12 +1065,12 @@ inline static void GSM_Auto(){
 			break;
 		case GSM_WAIT_CCLC_0:
 			if(GetStringFromFIFO()){
-				if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,0,")) != NULL) ){
+				if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,0,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,0,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,0,")) != NULL) ){
 					RequestRepeatCounter = 0;
 					GSM_State = GSM_SEND_PLAY_ALARM_FILE;
 					break;
 				}
-				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL) ){
+				if( (strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6,")) != NULL)){
 					StartTimer16(TD_GSM, 6000);
 					GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
 					break;
@@ -1115,7 +1115,7 @@ inline static void GSM_Auto(){
 				}
 			}
 			if(Timer16Stopp(TD_GSM)){
-				GSM_State = GSM_WAIT_CONFIRMRESPONSE;
+				GSM_State = GSM_WAIT_MESSAGE;
 			}
 			break;
 		case GSM_SEND_PLAY_CONFIRMREQUEST_FILE: 
@@ -1126,7 +1126,7 @@ inline static void GSM_Auto(){
 			StartTimer16(TD_GSM, 1000);
 			break;
 		case GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK:
-			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_OK)) 
+			if(GSM_Wait_Response_P(RESP_OK, GSM_WAIT_MESSAGE)) 
 				{
 					GSM_State = GSM_WAIT_PLAY_CONFIRMREQUEST_FILE_CREC_0;
 					StartTimer16(TD_GSM, 20000);
@@ -1144,15 +1144,21 @@ inline static void GSM_Auto(){
 				}
 			}
 			if(Timer16Stopp(TD_GSM)){
-				GSM_State = GSM_WAIT_CONFIRMRESPONSE;
-				StartTimer16(TD_GSM, 200);
+				GSM_State = GSM_WAIT_MESSAGE;
 			}
 			break;
 		case GSM_WAIT_CONFIRMRESPONSE:
 			if(GetStringFromFIFO()){
-				if(analize_DTMF()){
-					break;
-				}
+					if((strstr_P(GSM_RxStr, PSTR("+DTMF: 1")) != NULL) ){
+						StartTimer16(TD_GSM,1000);
+						GSM_State = GSM_SEND_PLAY_CONFIRM_FILE;
+						
+					}
+					if((strstr_P(GSM_RxStr, PSTR("+CLCC: 1,0,6")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 2,0,6")) != NULL)||(strstr_P(GSM_RxStr, PSTR("+CLCC: 3,0,6")) != NULL) ){
+						StartTimer16(TD_GSM,2000);
+						GSM_State = GSM_WAIT_DISCONNECT_CAUSE;
+						
+					}
 			}
 			if(Timer16Stopp(TD_GSM)){
 				if(RequestRepeatCounter<4){
@@ -1179,7 +1185,7 @@ inline static void GSM_Auto(){
 				}
 			}
 			if(Timer16Stopp(TD_GSM)){
-				GSM_State = GSM_SEND_PLAY_CONFIRM_FILE;
+				GSM_State = GSM_WAIT_MESSAGE;
 			}
 
 			break;
