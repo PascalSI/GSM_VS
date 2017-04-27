@@ -537,7 +537,7 @@ uint16_t TCP_CONNECT_timeout EEMEM = 7500;
 
 #ifndef SMS_NUMBER_INIT
 	#define SMS_NUMBER_INIT {"000000000000", "000000000000", "000000000000"}
-	#define CALL_NUMBER_INIT {"380633232300", "380938749645", "380967111434"}
+	#define CALL_NUMBER_INIT {"380633232300", "000000000000", "000000000000"}
 #endif
 char SMS_Number[MaxTelephDirSz][MaxTelephN] EEMEM = SMS_NUMBER_INIT;
 char CALL_Number[MaxTelephDirSz][MaxTelephN] EEMEM = CALL_NUMBER_INIT;
@@ -941,7 +941,14 @@ uint8_t analize_DTMF(){
 }
 uint8_t ConfirmState = 0;
 uint8_t RequestRepeatCounter = 0;
-
+uint8_t TransmitterState = 0;
+uint8_t GSM_GetConfirmState(){
+	if(1 == ConfirmState){
+		ConfirmState = 0;
+		return 1;
+	}
+	else return 0;
+}
 // ~~~~~~~~~~~~~~~~~~~~~~~~
 inline static void GSM_Auto(){
 
@@ -1010,13 +1017,17 @@ inline static void GSM_Auto(){
 			if(GSM_Wait_Response_P(RESP_OK, GSM_ReStart1)) GSM_State++;
 			break;
 		case GSM_WAIT_MESSAGE:
+			
 			if(Message[0]==1)
 			{
 				Message[0]=0;
 				ConfirmState=0;
 				ConfirmState = 0;
+				TransmitterState = 1;
 				GSM_State = GSM_SEND_ATD;
+				break;
 			}
+			TransmitterState = 0;
 			break;
 		case GSM_SEND_ATD:
 			sprintf_P(GSM_TxStr, ATD_PLUS);	GSMTxSz = strlen_P(ATD_PLUS);

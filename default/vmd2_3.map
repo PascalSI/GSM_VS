@@ -150,7 +150,9 @@ Timer1min           0x1               vmd2_3.o
 MaxScanCycle        0x1               vmd2_3.o
 GSM_RSSI            0x1               vmd2_3.o
 ADC_Time            0x1               vmd2_3.o
+CallerState         0x1               vmd2_3.o
 GSM_Tx              0x1               vmd2_3.o
+Channels            0x40              vmd2_3.o
 GSM_State           0x1               vmd2_3.o
 Tm_Sec              0x1               vmd2_3.o
 ADC_Break           0x2               vmd2_3.o
@@ -161,6 +163,7 @@ GPRS_Data_In        0x32              vmd2_3.o
 IP_SendMask         0x1               vmd2_3.o
 GSM_Modem           0x1               vmd2_3.o
 Message             0x3               vmd2_3.o
+CurrentAbonent      0x1               vmd2_3.o
 TD_ADC              0x1               vmd2_3.o
 KeyPressedCounter   0x4               vmd2_3.o
 GSM_RX_FIFO_Begin   0x1               vmd2_3.o
@@ -175,6 +178,7 @@ KeyPressed          0x1               vmd2_3.o
 GPRS_FlgSz_Out      0x1               vmd2_3.o
 ScanCount           0x2               vmd2_3.o
 ADC_ReadFail        0x2               vmd2_3.o
+CallerMessage       0x2               vmd2_3.o
 MB_Master_Cycle     0x2               vmd2_3.o
 MenuDepth           0x1               vmd2_3.o
 GSMTxSz             0x1               vmd2_3.o
@@ -193,6 +197,7 @@ ScanPerSec          0x2               vmd2_3.o
 GPRS_Protocol_Out   0x1               vmd2_3.o
 GSM_Control         0x1               vmd2_3.o
 DAC_Output          0x8               vmd2_3.o
+CurrentCall         0x1               vmd2_3.o
 DigOutput           0x6               vmd2_3.o
 GSM_RxStr           0x64              vmd2_3.o
 MB_InReg            0xa0              vmd2_3.o
@@ -357,7 +362,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000    0x10768
+.text           0x00000000    0x109c8
  *(.vectors)
  .vectors       0x00000000       0xe4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
                 0x00000000                __vectors
@@ -369,10 +374,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  *(.progmem*)
  .progmem.data  0x000002ce        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
  .progmem.data  0x000002d6       0x4d c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libscanf_flt.a(vfscanf_flt.o)
- .progmem.data  0x00000323     0x2e90 vmd2_3.o
+ .progmem.data  0x00000323     0x2fdf vmd2_3.o
                 0x000008f6                TSM100_Str
                 0x00000601                ATO
                 0x00000f61                MenuGSM_SMS
+                0x00002960                Channel0_debounceTimeout_OutField
                 0x00000920                RTD_Name_List
                 0x00000baa                YN_Tbl
                 0x00000c63                MenuGSM_Modem_State
@@ -390,13 +396,14 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000449                RESP_SHUT_OK
                 0x00001b89                F_DII3
                 0x00001c79                F_DII18
-                0x00002962                Menu0List
+                0x00002a7b                Menu0List
                 0x00001693                MsgErr12
                 0x00002715                ListTherm4
                 0x00001c89                ListDI
                 0x00000f71                MenuGSM_VegaSN
                 0x00002447                ADC_Tbl
                 0x00002895                List_Therm
+                0x00002980                Channel0_calling_retry_delay_OutField
                 0x00002457                F_Therm2
                 0x00000e31                MenuGSM_PortUDP4
                 0x000009e4                MB0_CPT_15
@@ -510,11 +517,12 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000521                AT_CIPMUX_1
                 0x00000c49                GSM_SIMCOM_SIM900R_Str
                 0x000009f0                MB0_CPT_26
+                0x00002990                Channel0
                 0x00002695                ListTherm3
                 0x00000538                AT_CIPCSGP
                 0x0000097e                BR_Str19200
                 0x00000708                DI_OK_Str
-                0x000029b3                Menu0
+                0x00002b02                Menu0
                 0x00000c53                GSM_SIMCOM_SIM800_Str
                 0x00000414                RESP_SERVER_CLOSE
                 0x00000711                DI_Op_Str
@@ -537,6 +545,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000938                TC_J_Str
                 0x00000a74                M_MB0_CPT
                 0x00001b45                F_DI16
+                0x0000295a                Channel0_Alarm_State_InField
                 0x0000096e                BR_Str4800
                 0x00000490                AT_DDET101
                 0x00002368                Menu_ADC_Ch
@@ -558,6 +567,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000561                AT_CIPTKA
                 0x0000246f                F_Therm6
                 0x00002432                ADC_C1_Str
+                0x00002954                Channel0_DI_State_InField
                 0x000009c8                F_MB0_Baud
                 0x00001335                F_Ok_EEPROM
                 0x00000437                RESP_CLOSE_OK_FAST
@@ -576,6 +586,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00001ad9                F_DI7
                 0x000024d5                F_ThermisD1
                 0x00000d01                MenuGSM_IPUDP1
+                0x00002a46                ChannelSettingsList
                 0x00001f03                F_DO9
                 0x00001317                MenuGSM
                 0x00000737                DO_Tbl
@@ -600,7 +611,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00001ba9                F_DII5
                 0x000008f0                ThermOff_Str
                 0x000006ae                Digits_P
-                0x0000294e                MenuModem
+                0x00002a61                MenuModem
                 0x00000978                BR_Str14400
                 0x00001b21                F_DI13
                 0x00000423                RESP_SEND_OK
@@ -624,6 +635,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00001bf9                F_DII10
                 0x00000910                Pt100_Str
                 0x00001631                MsgErr11
+                0x00002a32                Channel0_Page
                 0x00000cf1                MenuGSM_APN_PASSWORD
                 0x000007d3                F_ADC_2
                 0x0000184a                F_Menu_EMICounter
@@ -663,6 +675,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00001596                ListMem
                 0x000003b6                URC_REMOTE_IP
                 0x00001c49                F_DII15
+                0x00002970                Channel0_calling_delay_OutField
                 0x00002133                MenuDO
                 0x00002443                ADC_Of_Str
                 0x00002505                F_ThermisD4
@@ -672,11 +685,13 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x000024b5                F_Thermis5
                 0x00000bc4                F_DateTime
                 0x00000f41                MenuGSM_TCPPort
+                0x00002a75                Field_TransmitterState
                 0x000009d8                MB0_CPT_04
                 0x00001757                MsgErrMemo
                 0x00000515                AT_CIPMUX_0
                 0x0000176b                F_MaxScanCycle
                 0x00002781                MenuTherm4
+                0x0000294e                Channel0_Name_InField
                 0x0000098a                BR_Str38400
                 0x0000072d                DO_Op_Str
                 0x00000930                TC_K_Str
@@ -718,42 +733,41 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00001ed3                F_DO6
                 0x00001bb9                F_DII6
                 0x00001b69                F_DII1
- .progmem.data  0x000031b3       0xfa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
-                0x000032ae                . = ALIGN (0x2)
- *fill*         0x000032ad        0x1 00
-                0x000032ae                __trampolines_start = .
+ .progmem.data  0x00003302       0xfa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
+                0x000033fc                . = ALIGN (0x2)
+                0x000033fc                __trampolines_start = .
  *(.trampolines)
- .trampolines   0x000032ae        0x0 linker stubs
+ .trampolines   0x000033fc        0x0 linker stubs
  *(.trampolines*)
-                0x000032ae                __trampolines_end = .
+                0x000033fc                __trampolines_end = .
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x000032ae                __ctors_start = .
+                0x000033fc                __ctors_start = .
  *(.ctors)
-                0x000032ae                __ctors_end = .
-                0x000032ae                __dtors_start = .
+                0x000033fc                __ctors_end = .
+                0x000033fc                __dtors_start = .
  *(.dtors)
-                0x000032ae                __dtors_end = .
+                0x000033fc                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x000032ae        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
-                0x000032ae                __init
+ .init0         0x000033fc        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+                0x000033fc                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x000032ae       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+ .init2         0x000033fc       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x000032be       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
-                0x000032be                __do_copy_data
- .init4         0x000032d8       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
-                0x000032d8                __do_clear_bss
+ .init4         0x0000340c       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+                0x0000340c                __do_copy_data
+ .init4         0x00003426       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+                0x00003426                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -764,571 +778,575 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000032e8        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+ .init9         0x00003436        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
  *(.init9)
  *(.text)
- .text          0x000032f0        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
-                0x000032f0                __vector_22
-                0x000032f0                __vector_28
-                0x000032f0                __vector_1
-                0x000032f0                __vector_32
-                0x000032f0                __vector_34
-                0x000032f0                __vector_24
-                0x000032f0                __vector_12
-                0x000032f0                __vector_55
-                0x000032f0                __vector_46
-                0x000032f0                __bad_interrupt
-                0x000032f0                __vector_6
-                0x000032f0                __vector_31
-                0x000032f0                __vector_35
-                0x000032f0                __vector_39
-                0x000032f0                __vector_3
-                0x000032f0                __vector_23
-                0x000032f0                __vector_30
-                0x000032f0                __vector_45
-                0x000032f0                __vector_11
-                0x000032f0                __vector_54
-                0x000032f0                __vector_19
-                0x000032f0                __vector_56
-                0x000032f0                __vector_7
-                0x000032f0                __vector_49
-                0x000032f0                __vector_41
-                0x000032f0                __vector_43
-                0x000032f0                __vector_5
-                0x000032f0                __vector_33
-                0x000032f0                __vector_47
-                0x000032f0                __vector_4
-                0x000032f0                __vector_44
-                0x000032f0                __vector_9
-                0x000032f0                __vector_2
-                0x000032f0                __vector_15
-                0x000032f0                __vector_29
-                0x000032f0                __vector_40
-                0x000032f0                __vector_8
-                0x000032f0                __vector_48
-                0x000032f0                __vector_14
-                0x000032f0                __vector_10
-                0x000032f0                __vector_50
-                0x000032f0                __vector_16
-                0x000032f0                __vector_20
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libscanf_flt.a(vfscanf_flt.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(floatsisf.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3x.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_inf.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_nan.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscA.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscB.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_round.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_split3.o)
- .text          0x000032f4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_zero.o)
- .text          0x000032f4     0xb8cc vmd2_3.o
-                0x000075fc                __vector_38
-                0x000070ae                IP_compare_Const
-                0x00004a02                RTC_GetTrueTime
-                0x00007df6                DigitOut
-                0x00005eaa                MB_Slave_Off
-                0x000080de                ApplCycle
-                0x0000489a                SetDateTime
-                0x0000eb4a                EEMEMBackUpOk
-                0x00009664                analize_DTMF
-                0x0000366a                StartTimer16
-                0x000056da                MB_FrameReg
-                0x00003562                Timer16SysAlloc
-                0x0000790a                InitBufStr
-                0x000037ea                StopTimer16
-                0x00003ce0                MB_LED2
-                0x0000940e                PutVal
-                0x00007c52                DI_Status
-                0x00007de2                DO_Disable
-                0x00007bec                MenuEsc
-                0x00007482                GSM_TX
-                0x00004246                Log10
-                0x00009b9a                erbl
-                0x000070da                GSM_StartCalling
-                0x0000b568                MenuDown
-                0x000042ac                DecodBCD
-                0x00008016                ThermExt
-                0x00003e04                ADC_In
-                0x00007ebe                AI_Init
-                0x0000742a                GSM_SendFirstChar
-                0x0000377e                StopTimer8_ISR
-                0x0000989c                ewb
-                0x00003570                Timer32SysAlloc
-                0x00007bee                DI_State
-                0x00006ee2                MB_Master_MaxCycle_Clear
-                0x00008910                Put_zDVal
-                0x00003cc8                RS485_0
-                0x00003cee                PWM_Init
-                0x00008164                GSM_AddHeaderSendData
-                0x0000e1d4                SetBAUD
-                0x00008470                Put_bVal
-                0x00009922                eww
-                0x00007cd4                DO_State
-                0x00006ef4                MB_M_Cycle
-                0x000073e6                GSM_Wait_Char
-                0x00009870                Key_Mem
-                0x00003c36                TimeCycle
-                0x0000333e                CRC_Seed
-                0x0000a57a                MenuEscLeft
-                0x00004704                TWI_Error
-                0x000039f2                ResetTimer8
-                0x00008b52                Put_sDVal
-                0x0000b61e                MenuUp
-                0x000086ba                Put_TextValAlignRight
-                0x000050dc                StartTimer0
-                0x0000e0ae                USART_Cycle
-                0x00007d08                DO_Front
-                0x0000704c                MB_Cycle
-                0x00003494                WdtOn
-                0x000096ea                DigiFilt
-                0x00008018                Therm_ADC_Off
-                0x00004c30                GSM_CTS_State
-                0x00004c46                LED_Init
-                0x00003ce2                MB_LED_Err_On_0
-                0x0000963e                GSM_Execute_Command
-                0x000053c8                MB_Transm
-                0x00008866                Put_FFVal
-                0x0000795a                GotoMenu
-                0x00006bbc                MB_M_Tx
-                0x00003cec                MB_LED_Err_Off_2
-                0x00003478                InterruInit
-                0x00007dc2                SetAllDigOut
-                0x00007c76                DI_Init
-                0x00003ce8                MB_LED_Err_Off_1
-                0x00005686                SetCRC_MB
-                0x0000e0b8                IP_E_compare_Const
-                0x00004c02                GSM_PWRCNTRL_OFF
-                0x00008274                Put_sbVal
-                0x000074ac                __vector_25
-                0x00006bd4                Modbus_TX
-                0x000039ae                ResetTimer8_ISR
-                0x000077ba                KeypadIn
-                0x0000485e                SetMDay
-                0x000073a6                GSM_RX
-                0x0000810a                Menu_ConfirmationSave_Enter
-                0x00003ad2                GetTimer8_ISR
-                0x00004872                SetMon
-                0x00003ce6                MB_LED_Err_On_1
-                0x00005590                CommErr
-                0x000044b8                PGM_uBrokLine
-                0x000079ea                HideMsg
-                0x00009f0a                ThermInit
-                0x000034d8                Timer32Alloc
-                0x00006592                MB_M_Timer_ISR
-                0x00004a94                RTC_Check
-                0x0000e658                TWI_In
-                0x000070ea                InitFIFO
-                0x00003546                Timer8_ISR_SysAlloc
-                0x00007102                GetByteFromFIFO
-                0x000081f8                GetMultiSymbol
-                0x00007d9a                TogDigOut
-                0x00004c84                LED_Toggle
-                0x0000347c                IntOff
-                0x000090cc                Put_zVal
-                0x00004c22                GSM_CTS_RTS_Config
-                0x00005246                __vector_13
-                0x0000be86                MenuOut
-                0x00009954                OnTimeSave
-                0x0000709e                SetIP
-                0x00003b8e                __vector_17
-                0x00003a80                ResetTimer32
-                0x0000e272                Key_MB0_BitRate
-                0x00007452                GSM_DRE
-                0x00003942                Timer32Stopp
-                0x000098c8                MB_M_Try_Set
-                0x00003b10                GetTimer32
-                0x00009d98                ThermChanWrong
-                0x0000804e                ThermWrong
-                0x00009f8e                DigitIn
-                0x00003cd2                RS485_1
-                0x0000e3c4                USART_Init
-                0x000096d4                GSM_Wait_Response
-                0x00007794                KeypadInit
-                0x00003516                Timer16AppAlloc
-                0x000034ae                Timer8_ISR_Alloc
-                0x000072fa                GSM_Init
-                0x00008144                GSM_SendData
-                0x00004822                SetSec
-                0x00004c3e                GSM_RTS_ON
-                0x0000e27a                SetParity
-                0x00009ba0                erd
-                0x00003cbe                MB_PLC_Init
-                0x00009ba6                erw
-                0x0000729c                ForceEndStringFromFIFO
-                0x0000352e                Timer32AppAlloc
-                0x00004c12                GSM_PWRCNTRL_ON
-                0x00004bf2                GSM_PWRCNTRL_Config
-                0x00007500                __vector_27
-                0x000032f4                rrb
-                0x00009dd2                ThermChan
-                0x000050b6                LCDBackLightControl
-                0x00007ee0                AnalogIn
-                0x00007234                GetStringFromFIFOwithOverflowDetect
-                0x000050f0                StartTimer2
-                0x000047ca                SetWeekday
-                0x00003d2c                PWM_Out
-                0x000074a6                GSM_GotoNextVega
-                0x00007a8e                GetCurrFieldSize
-                0x000034e6                Timer8_ISR_AppAlloc
-                0x00007bea                MenuEnter
-                0x00008602                Put_TextValAlignLeft
-                0x00004836                SetMin
-                0x00003820                StopTimer32
-                0x000080dc                ApplInit
-                0x00009d08                MemCheck
-                0x00003c7a                Delay_ms
-                0x000032fa                prb
-                0x000076a4                __vector_52
-                0x00007650                __vector_37
-                0x00005738                MB_S_Timer_ISR
-                0x0000357e                StartTimer8_ISR
-                0x00003b3e                TimerAllocError
-                0x00009972                TimersInc
-                0x0000330a                prd
-                0x000080e0                StartKey
-                0x0000e46c                LCD_Init
-                0x0000e9de                main
-                0x000046cc                TWI_Init
-                0x000080a6                Key_MB0_CPT_Clear
-                0x00009b86                ewbl
-                0x000072c0                GetDataFromFIFO
-                0x00005496                Modbus_RX
-                0x0000e430                LCDBackLightInit
-                0x000095e2                GSM_SendCR
-                0x000098a6                MB_M_TimeOff_Set
-                0x00007e94                DO_Init
-                0x0000456e                InterBrokLine
-                0x000043bc                uLineFunc
-                0x00007be6                MenuRight
-                0x00003c74                MaxScanCycle_Clear
-                0x000038e2                Timer16Stopp
-                0x000080cc                Key_MaxScanCycle_Clear
-                0x00005708                MB_CPT_Clear
-                0x00003cde                MB_LED1
-                0x000074a4                GSM_Reset
-                0x00007744                __vector_51
-                0x00009246                Put_sVal
-                0x00004a3c                RTC_SetTrueTime
-                0x0000990c                Set_MB_Addr
-                0x00007f4e                Thermode
-                0x0000e3ce                LCDBackLightStartTimer
-                0x000041de                Pow10
-                0x00007d70                ResDigOut
-                0x0000e90e                TimeInit
-                0x000049f2                RTC_Ready
-                0x000034bc                Timer8Alloc
-                0x00003a36                ResetTimer16
-                0x000051e2                __vector_21
-                0x000035f4                StartTimer8
-                0x00009d6e                MemCheckMsg
-                0x000075a8                __vector_36
-                0x00004d44                LCD_Rdy
-                0x00003334                prp
-                0x0000332e                prc
-                0x00003300                prw
-                0x0000331a                prb_f
-                0x000034fe                Timer8AppAlloc
-                0x00004c70                LED_Off
-                0x000098ea                MB_M_Timeout_Set
-                0x0000e1b4                MB_S_Init
-                0x000042c0                LineFunc
-                0x00007d48                SetDigOut
-                0x00003ade                GetTimer8
-                0x00004d70                LCD_Out
-                0x00007be8                MenuLeft
-                0x00003cdc                MB_LED0
-                0x00009588                GSM_Wait_Response_P
-                0x000037b4                StopTimer8
-                0x00007554                __vector_26
-                0x00004c36                GSM_RTS_OFF
-                0x00003856                Timer8Stopp_ISR
-                0x0000509a                LCDBackLightOff
-                0x000071d6                GetStringFromFIFO
-                0x0000e5ce                RTC_Summer_Time
-                0x0000e368                MB_Init
-                0x00004292                CodBCD
-                0x00003554                Timer8SysAlloc
-                0x000033da                CRC
-                0x0000420c                PowL10
-                0x0000c36a                GSM_Cycle
-                0x00003cea                MB_LED_Err_On_2
-                0x00008184                PresicionHanler
-                0x00005e92                MB_S_Tx
-                0x00008772                Put_GFVal
-                0x000034ca                Timer16Alloc
-                0x0000389c                Timer8Stopp
-                0x0000eb7c                Menu_BackUp_Enter
-                0x00008212                PutEnum
-                0x00007c12                DI_Front
-                0x00009b90                ewd
-                0x0000e112                MB_M_Init
-                0x00003aea                GetTimer16
-                0x00009852                MemFailReset
-                0x0000e360                Key_MB0_Parity
-                0x0000484a                SetHour
-                0x000076f4                __vector_53
-                0x0000e9aa                MemCheckInit
-                0x00006d7c                MB_SingleRun
-                0x00004c5c                LED_On
-                0x00007a30                MenuInit
-                0x00003c8e                Delay_us
-                0x0000aeca                MenuEnterRight
-                0x00004156                SPI_Init
-                0x00009d92                erb
-                0x00009bac                EE_InterBrokLine
-                0x00007dce                DO_Enable
-                0x00004de0                __vector_18
-                0x000074aa                GPRS_ServerAddr_Save
-                0x00007a0e                ShowMsg
-                0x0000507e                LCDBackLightOn
-                0x00004886                SetYear
-                0x000036e8                StartTimer32
-                0x000080f4                Menu_ConfirmationRest_Enter
-                0x000080f2                StopKey
-                0x00003b76                ScanCycleInit
-                0x00005108                StartTimer4
-                0x000052ae                __vector_42
-                0x0000992c                MB_M_Period_Set
-                0x00003ce4                MB_LED_Err_Off_0
-                0x0000c324                strcpy_EE
-                0x00008fe6                Put_zVal_h
-                0x000080c4                ResetGSMState
-                0x00008da4                PutDVal
-                0x00003488                IntOn
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .text          0x0000ebc0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
-                0x0000ebc0                . = ALIGN (0x2)
+ .text          0x0000343e        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
+                0x0000343e                __vector_22
+                0x0000343e                __vector_28
+                0x0000343e                __vector_1
+                0x0000343e                __vector_32
+                0x0000343e                __vector_34
+                0x0000343e                __vector_24
+                0x0000343e                __vector_12
+                0x0000343e                __vector_55
+                0x0000343e                __vector_46
+                0x0000343e                __bad_interrupt
+                0x0000343e                __vector_6
+                0x0000343e                __vector_31
+                0x0000343e                __vector_35
+                0x0000343e                __vector_39
+                0x0000343e                __vector_3
+                0x0000343e                __vector_23
+                0x0000343e                __vector_30
+                0x0000343e                __vector_45
+                0x0000343e                __vector_11
+                0x0000343e                __vector_54
+                0x0000343e                __vector_19
+                0x0000343e                __vector_56
+                0x0000343e                __vector_7
+                0x0000343e                __vector_49
+                0x0000343e                __vector_41
+                0x0000343e                __vector_43
+                0x0000343e                __vector_5
+                0x0000343e                __vector_33
+                0x0000343e                __vector_47
+                0x0000343e                __vector_4
+                0x0000343e                __vector_44
+                0x0000343e                __vector_9
+                0x0000343e                __vector_2
+                0x0000343e                __vector_15
+                0x0000343e                __vector_29
+                0x0000343e                __vector_40
+                0x0000343e                __vector_8
+                0x0000343e                __vector_48
+                0x0000343e                __vector_14
+                0x0000343e                __vector_10
+                0x0000343e                __vector_50
+                0x0000343e                __vector_16
+                0x0000343e                __vector_20
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libscanf_flt.a(vfscanf_flt.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(floatsisf.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3x.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_inf.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_nan.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscA.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscB.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_round.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_split3.o)
+ .text          0x00003442        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_zero.o)
+ .text          0x00003442     0xb9de vmd2_3.o
+                0x0000775e                __vector_38
+                0x000071fc                IP_compare_Const
+                0x00004b50                RTC_GetTrueTime
+                0x00007f58                DigitOut
+                0x00005ff8                MB_Slave_Off
+                0x000082f2                ApplCycle
+                0x000049e8                SetDateTime
+                0x0000edaa                EEMEMBackUpOk
+                0x0000989a                analize_DTMF
+                0x000037b8                StartTimer16
+                0x00005828                MB_FrameReg
+                0x000036b0                Timer16SysAlloc
+                0x00007a6c                InitBufStr
+                0x00003938                StopTimer16
+                0x00003e2e                MB_LED2
+                0x00009644                PutVal
+                0x00007db4                DI_Status
+                0x00007f44                DO_Disable
+                0x00007d4e                MenuEsc
+                0x000075d0                GSM_TX
+                0x00004394                Log10
+                0x00009dd0                erbl
+                0x00007228                GSM_StartCalling
+                0x0000b79e                MenuDown
+                0x000043fa                DecodBCD
+                0x00008178                ThermExt
+                0x00003f52                ADC_In
+                0x00008020                AI_Init
+                0x00007578                GSM_SendFirstChar
+                0x000038cc                StopTimer8_ISR
+                0x00009ad2                ewb
+                0x000036be                Timer32SysAlloc
+                0x00007d50                DI_State
+                0x00007030                MB_Master_MaxCycle_Clear
+                0x00008b46                Put_zDVal
+                0x00003e16                RS485_0
+                0x00003e3c                PWM_Init
+                0x0000839a                GSM_AddHeaderSendData
+                0x0000e420                SetBAUD
+                0x000086a6                Put_bVal
+                0x00009b58                eww
+                0x00007e36                DO_State
+                0x00007042                MB_M_Cycle
+                0x00007534                GSM_Wait_Char
+                0x00009aa6                Key_Mem
+                0x00003d84                TimeCycle
+                0x0000348c                CRC_Seed
+                0x0000a7b0                MenuEscLeft
+                0x00004852                TWI_Error
+                0x00003b40                ResetTimer8
+                0x00008d88                Put_sDVal
+                0x0000b854                MenuUp
+                0x000088f0                Put_TextValAlignRight
+                0x0000522a                StartTimer0
+                0x0000e2fa                USART_Cycle
+                0x00007e6a                DO_Front
+                0x0000719a                MB_Cycle
+                0x000035e2                WdtOn
+                0x00009920                DigiFilt
+                0x0000817a                Therm_ADC_Off
+                0x00004d7e                GSM_CTS_State
+                0x00004d94                LED_Init
+                0x00003e30                MB_LED_Err_On_0
+                0x00009874                GSM_Execute_Command
+                0x00005516                MB_Transm
+                0x00008a9c                Put_FFVal
+                0x00007abc                GotoMenu
+                0x00006d0a                MB_M_Tx
+                0x00003e3a                MB_LED_Err_Off_2
+                0x000035c6                InterruInit
+                0x00007f24                SetAllDigOut
+                0x00007dd8                DI_Init
+                0x00003e36                MB_LED_Err_Off_1
+                0x000057d4                SetCRC_MB
+                0x0000e304                IP_E_compare_Const
+                0x00004d50                GSM_PWRCNTRL_OFF
+                0x000084aa                Put_sbVal
+                0x0000760e                __vector_25
+                0x00006d22                Modbus_TX
+                0x00003afc                ResetTimer8_ISR
+                0x0000791c                KeypadIn
+                0x000049ac                SetMDay
+                0x000074f4                GSM_RX
+                0x00008340                Menu_ConfirmationSave_Enter
+                0x00003c20                GetTimer8_ISR
+                0x000049c0                SetMon
+                0x00003e34                MB_LED_Err_On_1
+                0x000056de                CommErr
+                0x00004606                PGM_uBrokLine
+                0x00007b4c                HideMsg
+                0x0000a140                ThermInit
+                0x00003626                Timer32Alloc
+                0x000066e0                MB_M_Timer_ISR
+                0x00004be2                RTC_Check
+                0x0000e8a4                TWI_In
+                0x00007238                InitFIFO
+                0x00003694                Timer8_ISR_SysAlloc
+                0x00007250                GetByteFromFIFO
+                0x0000842e                GetMultiSymbol
+                0x00007efc                TogDigOut
+                0x00004dd2                LED_Toggle
+                0x000035ca                IntOff
+                0x00009302                Put_zVal
+                0x00004d70                GSM_CTS_RTS_Config
+                0x00005394                __vector_13
+                0x0000c0bc                MenuOut
+                0x00009b8a                OnTimeSave
+                0x000071ec                SetIP
+                0x00003cdc                __vector_17
+                0x00003bce                ResetTimer32
+                0x0000e4be                Key_MB0_BitRate
+                0x000075a0                GSM_DRE
+                0x00003a90                Timer32Stopp
+                0x00009afe                MB_M_Try_Set
+                0x00003c5e                GetTimer32
+                0x00009fce                ThermChanWrong
+                0x000081b0                ThermWrong
+                0x0000a1c4                DigitIn
+                0x00003e20                RS485_1
+                0x0000e610                USART_Init
+                0x0000990a                GSM_Wait_Response
+                0x000078f6                KeypadInit
+                0x00003664                Timer16AppAlloc
+                0x000035fc                Timer8_ISR_Alloc
+                0x00007448                GSM_Init
+                0x0000837a                GSM_SendData
+                0x00004970                SetSec
+                0x00004d8c                GSM_RTS_ON
+                0x0000e4c6                SetParity
+                0x00009dd6                erd
+                0x00003e0c                MB_PLC_Init
+                0x00009ddc                erw
+                0x000073ea                ForceEndStringFromFIFO
+                0x0000367c                Timer32AppAlloc
+                0x00004d60                GSM_PWRCNTRL_ON
+                0x00004d40                GSM_PWRCNTRL_Config
+                0x00007662                __vector_27
+                0x00003442                rrb
+                0x0000a008                ThermChan
+                0x00005204                LCDBackLightControl
+                0x00008042                AnalogIn
+                0x00007382                GetStringFromFIFOwithOverflowDetect
+                0x0000523e                StartTimer2
+                0x00004918                SetWeekday
+                0x00003e7a                PWM_Out
+                0x000075f4                GSM_GotoNextVega
+                0x00007bf0                GetCurrFieldSize
+                0x00003634                Timer8_ISR_AppAlloc
+                0x00007d4c                MenuEnter
+                0x00008838                Put_TextValAlignLeft
+                0x00004984                SetMin
+                0x0000396e                StopTimer32
+                0x000075f8                GSM_GetConfirmState
+                0x000082e0                ApplInit
+                0x00009f3e                MemCheck
+                0x00003dc8                Delay_ms
+                0x00003448                prb
+                0x00007806                __vector_52
+                0x000077b2                __vector_37
+                0x00005886                MB_S_Timer_ISR
+                0x000036cc                StartTimer8_ISR
+                0x00003c8c                TimerAllocError
+                0x00009ba8                TimersInc
+                0x00003458                prd
+                0x0000831a                StartKey
+                0x0000e6b8                LCD_Init
+                0x0000ec2a                main
+                0x0000481a                TWI_Init
+                0x00008208                Key_MB0_CPT_Clear
+                0x00009dbc                ewbl
+                0x0000740e                GetDataFromFIFO
+                0x000055e4                Modbus_RX
+                0x0000e67c                LCDBackLightInit
+                0x00009818                GSM_SendCR
+                0x00009adc                MB_M_TimeOff_Set
+                0x00007ff6                DO_Init
+                0x000046bc                InterBrokLine
+                0x0000450a                uLineFunc
+                0x00007d48                MenuRight
+                0x00003dc2                MaxScanCycle_Clear
+                0x00003a30                Timer16Stopp
+                0x0000822e                Key_MaxScanCycle_Clear
+                0x00005856                MB_CPT_Clear
+                0x00003e2c                MB_LED1
+                0x000075f2                GSM_Reset
+                0x000078a6                __vector_51
+                0x0000947c                Put_sVal
+                0x00004b8a                RTC_SetTrueTime
+                0x0000823e                Caller_StartCalling
+                0x00009b42                Set_MB_Addr
+                0x000080b0                Thermode
+                0x0000e61a                LCDBackLightStartTimer
+                0x0000432c                Pow10
+                0x00007ed2                ResDigOut
+                0x0000eb5a                TimeInit
+                0x00004b40                RTC_Ready
+                0x0000360a                Timer8Alloc
+                0x00003b84                ResetTimer16
+                0x00005330                __vector_21
+                0x00003742                StartTimer8
+                0x00009fa4                MemCheckMsg
+                0x0000770a                __vector_36
+                0x00004e92                LCD_Rdy
+                0x00003482                prp
+                0x0000347c                prc
+                0x0000344e                prw
+                0x00003468                prb_f
+                0x0000364c                Timer8AppAlloc
+                0x00004dbe                LED_Off
+                0x00009b20                MB_M_Timeout_Set
+                0x0000e400                MB_S_Init
+                0x0000440e                LineFunc
+                0x00007eaa                SetDigOut
+                0x00003c2c                GetTimer8
+                0x00004ebe                LCD_Out
+                0x00007d4a                MenuLeft
+                0x00003e2a                MB_LED0
+                0x000097be                GSM_Wait_Response_P
+                0x00003902                StopTimer8
+                0x000076b6                __vector_26
+                0x00004d84                GSM_RTS_OFF
+                0x000039a4                Timer8Stopp_ISR
+                0x000051e8                LCDBackLightOff
+                0x00007324                GetStringFromFIFO
+                0x0000e81a                RTC_Summer_Time
+                0x0000e5b4                MB_Init
+                0x000043e0                CodBCD
+                0x000036a2                Timer8SysAlloc
+                0x00003528                CRC
+                0x0000435a                PowL10
+                0x0000c5a0                GSM_Cycle
+                0x00003e38                MB_LED_Err_On_2
+                0x000083ba                PresicionHanler
+                0x00005fe0                MB_S_Tx
+                0x000089a8                Put_GFVal
+                0x00003618                Timer16Alloc
+                0x000039ea                Timer8Stopp
+                0x0000eddc                Menu_BackUp_Enter
+                0x00008448                PutEnum
+                0x00007d74                DI_Front
+                0x000082de                ChannelProcessing
+                0x00009dc6                ewd
+                0x0000e35e                MB_M_Init
+                0x00003c38                GetTimer16
+                0x00009a88                MemFailReset
+                0x0000e5ac                Key_MB0_Parity
+                0x00004998                SetHour
+                0x00007856                __vector_53
+                0x0000ebf6                MemCheckInit
+                0x00006eca                MB_SingleRun
+                0x00004daa                LED_On
+                0x00007b92                MenuInit
+                0x00003ddc                Delay_us
+                0x0000b100                MenuEnterRight
+                0x000042a4                SPI_Init
+                0x0000824a                CallerCycle
+                0x00009fc8                erb
+                0x00009de2                EE_InterBrokLine
+                0x00007f30                DO_Enable
+                0x00004f2e                __vector_18
+                0x0000760c                GPRS_ServerAddr_Save
+                0x00007b70                ShowMsg
+                0x000051cc                LCDBackLightOn
+                0x000049d4                SetYear
+                0x00003836                StartTimer32
+                0x0000832a                Menu_ConfirmationRest_Enter
+                0x00008328                StopKey
+                0x00003cc4                ScanCycleInit
+                0x00005256                StartTimer4
+                0x000053fc                __vector_42
+                0x00009b62                MB_M_Period_Set
+                0x00003e32                MB_LED_Err_Off_0
+                0x0000c55a                strcpy_EE
+                0x0000921c                Put_zVal_h
+                0x00008226                ResetGSMState
+                0x00008fda                PutDVal
+                0x000035d6                IntOn
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .text          0x0000ee20        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+                0x0000ee20                . = ALIGN (0x2)
  *(.text.*)
  .text.avr-libc
-                0x0000ebc0      0x760 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
-                0x0000ebc0                vfprintf
+                0x0000ee20      0x760 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
+                0x0000ee20                vfprintf
  .text.avr-libc
-                0x0000f320      0x88c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libscanf_flt.a(vfscanf_flt.o)
-                0x0000f92e                vfscanf
+                0x0000f580      0x88c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libscanf_flt.a(vfscanf_flt.o)
+                0x0000fb8e                vfscanf
  .text.avr-libc.fplib
-                0x0000fbac       0x7a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(floatsisf.o)
-                0x0000fbb0                __floatsisf
-                0x0000fbac                __floatunsisf
+                0x0000fe0c       0x7a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(floatsisf.o)
+                0x0000fe10                __floatsisf
+                0x0000fe0c                __floatunsisf
  .text.avr-libc.fplib
-                0x0000fc26        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3.o)
-                0x0000fc26                __mulsf3
+                0x0000fe86        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3.o)
+                0x0000fe86                __mulsf3
  .text.avr-libc.fplib
-                0x0000fc2a       0xc2 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3x.o)
-                0x0000fc42                __mulsf3_pse
-                0x0000fc3e                __mulsf3x
+                0x0000fe8a       0xc2 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(mulsf3x.o)
+                0x0000fea2                __mulsf3_pse
+                0x0000fe9e                __mulsf3x
  .text.avr-libc.fplib
-                0x0000fcec        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_inf.o)
-                0x0000fcec                __fp_inf
+                0x0000ff4c        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_inf.o)
+                0x0000ff4c                __fp_inf
  .text.avr-libc.fplib
-                0x0000fcf8        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_nan.o)
-                0x0000fcf8                __fp_nan
+                0x0000ff58        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_nan.o)
+                0x0000ff58                __fp_nan
  .text.avr-libc.fplib
-                0x0000fcfe        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscA.o)
-                0x0000fcfe                __fp_pscA
+                0x0000ff5e        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscA.o)
+                0x0000ff5e                __fp_pscA
  .text.avr-libc.fplib
-                0x0000fd0c        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscB.o)
-                0x0000fd0c                __fp_pscB
+                0x0000ff6c        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_pscB.o)
+                0x0000ff6c                __fp_pscB
  .text.avr-libc.fplib
-                0x0000fd1a       0x22 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_round.o)
-                0x0000fd1a                __fp_round
+                0x0000ff7a       0x22 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_round.o)
+                0x0000ff7a                __fp_round
  .text.avr-libc.fplib
-                0x0000fd3c       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_split3.o)
-                0x0000fd3c                __fp_split3
-                0x0000fd4c                __fp_splitA
+                0x0000ff9c       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_split3.o)
+                0x0000ff9c                __fp_split3
+                0x0000ffac                __fp_splitA
  .text.avr-libc.fplib
-                0x0000fd80        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_zero.o)
-                0x0000fd80                __fp_zero
-                0x0000fd82                __fp_szero
+                0x0000ffe0        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_zero.o)
+                0x0000ffe0                __fp_zero
+                0x0000ffe2                __fp_szero
  .text.avr-libc
-                0x0000fd8e        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
-                0x0000fd8e                exit
+                0x0000ffee        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
+                0x0000ffee                exit
  .text.avr-libc
-                0x0000fd94      0x1b0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
-                0x0000fd94                __ftoa_engine
+                0x0000fff4      0x1b0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
+                0x0000fff4                __ftoa_engine
  .text.avr-libc
-                0x0000ff44       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
-                0x0000ff44                isspace
+                0x000101a4       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
+                0x000101a4                isspace
  .text.avr-libc
-                0x0000ff54       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
-                0x0000ff54                tolower
+                0x000101b4       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
+                0x000101b4                tolower
  .text.avr-libc
-                0x0000ff64       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
-                0x0000ff64                strchr_P
+                0x000101c4       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
+                0x000101c4                strchr_P
  .text.avr-libc
-                0x0000ff7a       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
-                0x0000ff7a                strcmp_P
+                0x000101da       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
+                0x000101da                strcmp_P
  .text.avr-libc
-                0x0000ff8c        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
-                0x0000ff8c                strcpy_P
+                0x000101ec        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
+                0x000101ec                strcpy_P
  .text.avr-libc
-                0x0000ff9a       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
-                0x0000ff9a                strlen_P
+                0x000101fa       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
+                0x000101fa                strlen_P
  .text.avr-libc
-                0x0000ffac       0x1c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
-                0x0000ffac                strncmp_P
+                0x0001020c       0x1c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
+                0x0001020c                strncmp_P
  .text.avr-libc
-                0x0000ffc8       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
-                0x0000ffc8                strnlen_P
+                0x00010228       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+                0x00010228                strnlen_P
  .text.avr-libc
-                0x0000ffde       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
-                0x0000ffde                strstr_P
+                0x0001023e       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
+                0x0001023e                strstr_P
  .text.avr-libc
-                0x00010012       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
-                0x00010012                memcpy
+                0x00010272       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
+                0x00010272                memcpy
  .text.avr-libc
-                0x00010024       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
-                0x00010024                strchr
+                0x00010284       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
+                0x00010284                strchr
  .text.avr-libc
-                0x0001003a       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
-                0x0001003a                strcmp
+                0x0001029a       0x12 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
+                0x0001029a                strcmp
  .text.avr-libc
-                0x0001004c       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
-                0x0001004c                strnlen
+                0x000102ac       0x16 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
+                0x000102ac                strnlen
  .text.avr-libc
-                0x00010062       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
-                0x00010062                strstr
+                0x000102c2       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
+                0x000102c2                strstr
  .text.avr-libc
-                0x00010096       0x84 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
-                0x00010096                fgetc
+                0x000102f6       0x84 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
+                0x000102f6                fgetc
  .text.avr-libc
-                0x0001011a       0x58 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
-                0x0001011a                fputc
+                0x0001037a       0x58 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
+                0x0001037a                fputc
  .text.avr-libc
-                0x00010172       0x62 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
-                0x00010172                sprintf
+                0x000103d2       0x62 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
+                0x000103d2                sprintf
  .text.avr-libc
-                0x000101d4       0x62 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
-                0x000101d4                sprintf_P
+                0x00010434       0x62 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
+                0x00010434                sprintf_P
  .text.avr-libc
-                0x00010236       0x46 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
-                0x00010236                sscanf
+                0x00010496       0x46 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
+                0x00010496                sscanf
  .text.avr-libc
-                0x0001027c       0x46 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
-                0x0001027c                sscanf_P
+                0x000104dc       0x46 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
+                0x000104dc                sscanf_P
  .text.avr-libc
-                0x000102c2       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
-                0x000102c2                ungetc
+                0x00010522       0x34 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
+                0x00010522                ungetc
  .text.avr-libc
-                0x000102f6       0xbc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
-                0x000102f6                __ultoa_invert
+                0x00010556       0xbc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+                0x00010556                __ultoa_invert
  .text.avr-libc.fplib
-                0x000103b2        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
-                0x000103b2                __subsf3
-                0x000103b4                __addsf3
+                0x00010612        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
+                0x00010612                __subsf3
+                0x00010614                __addsf3
  .text.avr-libc.fplib
-                0x000103bc       0xc0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
-                0x000103d6                __addsf3x
+                0x0001061c       0xc0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
+                0x00010636                __addsf3x
  .text.avr-libc.fplib
-                0x0001047c        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
-                0x0001047c                __divsf3
+                0x000106dc        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
+                0x000106dc                __divsf3
  .text.avr-libc.fplib
-                0x00010480       0xcc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
-                0x00010496                __divsf3x
-                0x0001049a                __divsf3_pse
+                0x000106e0       0xcc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
+                0x000106f6                __divsf3x
+                0x000106fa                __divsf3_pse
  .text.avr-libc.fplib
-                0x0001054c        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
-                0x0001054c                __fixsfsi
+                0x000107ac        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
+                0x000107ac                __fixsfsi
  .text.avr-libc.fplib
-                0x00010556       0x58 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
-                0x00010556                __fixunssfsi
+                0x000107b6       0x58 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
+                0x000107b6                __fixunssfsi
  .text.avr-libc
-                0x000105ae       0x20 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
-                0x000105b2                __eerd_blraw_m2560
-                0x000105ae                __eerd_block_m2560
+                0x0001080e       0x20 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
+                0x00010812                __eerd_blraw_m2560
+                0x0001080e                __eerd_block_m2560
  .text.avr-libc
-                0x000105ce       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
-                0x000105ce                __eerd_byte_m2560
+                0x0001082e       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
+                0x0001082e                __eerd_byte_m2560
  .text.avr-libc
-                0x000105de        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
-                0x000105de                __eerd_dword_m2560
-                0x000105de                __eerd_float_m2560
+                0x0001083e        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
+                0x0001083e                __eerd_dword_m2560
+                0x0001083e                __eerd_float_m2560
  .text.avr-libc
-                0x000105ea        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
-                0x000105ea                __eerd_word_m2560
+                0x0001084a        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
+                0x0001084a                __eerd_word_m2560
  .text.avr-libc
-                0x000105f6       0x14 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
-                0x000105f6                __eewr_block_m2560
+                0x00010856       0x14 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
+                0x00010856                __eewr_block_m2560
  .text.avr-libc
-                0x0001060a       0x1c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
-                0x0001060c                __eewr_r18_m2560
-                0x0001060a                __eewr_byte_m2560
+                0x0001086a       0x1c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
+                0x0001086c                __eewr_r18_m2560
+                0x0001086a                __eewr_byte_m2560
  .text.avr-libc
-                0x00010626       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
-                0x00010626                __eewr_dword_m2560
-                0x00010626                __eewr_float_m2560
+                0x00010886       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
+                0x00010886                __eewr_dword_m2560
+                0x00010886                __eewr_float_m2560
  .text.avr-libc
-                0x00010636        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
-                0x00010636                __eewr_word_m2560
+                0x00010896        0xa c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
+                0x00010896                __eewr_word_m2560
  .text.avr-libc
-                0x00010640        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
-                0x00010644                __ctype_istrue
-                0x00010640                __ctype_isfalse
- .text.libgcc   0x00010646       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
-                0x00010646                __mulsi3
- .text.libgcc   0x00010684       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
-                0x00010684                __udivmodqi4
- .text.libgcc   0x0001069c       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
-                0x0001069c                __udivmodhi4
- .text.libgcc   0x000106c4       0x26 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
-                0x000106c4                __divmodhi4
-                0x000106c4                _div
- .text.libgcc   0x000106ea       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
-                0x000106ea                __udivmodsi4
- .text.libgcc   0x0001072e       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
-                0x0001072e                __divmodsi4
- .text.libgcc   0x00010764        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .text.libgcc   0x00010764        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
-                0x00010764                . = ALIGN (0x2)
+                0x000108a0        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
+                0x000108a4                __ctype_istrue
+                0x000108a0                __ctype_isfalse
+ .text.libgcc   0x000108a6       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
+                0x000108a6                __mulsi3
+ .text.libgcc   0x000108e4       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+                0x000108e4                __udivmodqi4
+ .text.libgcc   0x000108fc       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
+                0x000108fc                __udivmodhi4
+ .text.libgcc   0x00010924       0x26 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
+                0x00010924                __divmodhi4
+                0x00010924                _div
+ .text.libgcc   0x0001094a       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
+                0x0001094a                __udivmodsi4
+ .text.libgcc   0x0001098e       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
+                0x0001098e                __divmodsi4
+ .text.libgcc   0x000109c4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .text.libgcc   0x000109c4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+                0x000109c4                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00010764        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
-                0x00010764                _exit
+ .fini9         0x000109c4        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+                0x000109c4                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1347,11 +1365,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00010764        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .fini0         0x000109c4        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
  *(.fini0)
-                0x00010768                _etext = .
+                0x000109c8                _etext = .
 
-.data           0x00800200       0xda load address 0x00010768
+.data           0x00800200       0xda load address 0x000109c8
                 0x00800200                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800200        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
@@ -1435,7 +1453,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x008002da                _edata = .
                 0x008002da                PROVIDE (__data_end, .)
 
-.bss            0x008002da      0x952
+.bss            0x008002da      0x999
                 0x008002da                PROVIDE (__bss_start, .)
  *(.bss)
  .bss           0x008002da        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm2560.o
@@ -1451,7 +1469,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  .bss           0x008002da        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_round.o)
  .bss           0x008002da        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_split3.o)
  .bss           0x008002da        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(fp_zero.o)
- .bss           0x008002da      0x2e5 vmd2_3.o
+ .bss           0x008002da      0x2e7 vmd2_3.o
                 0x008002dc                numOfCheckBallanceRetry
                 0x008002dd                GSMBusyState
                 0x008002da                VacantTimer8_ISR
@@ -1460,187 +1478,194 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x008002db                VacantTimer8Sys_ISR
                 0x008002e0                counter
                 0x008002e1                ConfirmState
+                0x008002e3                TransmitterState
                 0x008002df                dataSendFlg
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
- .bss           0x008005bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(exit.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ftoa_engine.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(isspace.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(tolower.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcpy_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strlen_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strncmp_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr_P.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(memcpy.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strchr.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strcmp.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strstr.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sprintf_p.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(sscanf_p.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ungetc.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(addsf3x.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(divsf3x.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixsfsi.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fixunssfsi.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_block_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_byte_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_dword_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eerd_word_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_block_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_byte_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_dword_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(eewr_word_atmega2560.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(cty_isfalse.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_mulsi3.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodqi4.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodhi4.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodhi4.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_udivmodsi4.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_divmodsi4.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_exit.o)
+ .bss           0x008005c1        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a(_clear_bss.o)
  *(.bss*)
  *(COMMON)
- COMMON         0x008005bf      0x66d vmd2_3.o
-                0x008005bf                Tm_Hour
-                0x008005c0                MB_State
-                0x008005c1                BufStr
-                0x008005d6                TrueTime_Hour
-                0x008005d7                NextPage
-                0x008005d9                GSM_Temp
-                0x008005da                TempNum
-                0x008005db                NotSummerTimeFlag
-                0x008005dc                Tm_Year
-                0x008005dd                MB_M_TimeOff
-                0x008005de                MB_NativeAddr
-                0x008005df                GSM_RX_FIFO
-                0x00800643                Temperature
-                0x0080064f                Tm_Min
-                0x00800650                BackLightMode
-                0x00800651                GSM_RX_FIFO_End
-                0x00800652                CurrSlave
-                0x00800653                CurrQuery
-                0x00800654                TrueTime_MDay
-                0x00800655                Tm_WDay
-                0x00800656                LCD_Buf
-                0x008006aa                StrSize
-                0x008006ab                MB_M_Period
-                0x008006ad                MB_SingleState
-                0x008006ae                Timer1min
-                0x008006af                MaxScanCycle
-                0x008006b0                GSM_RSSI
-                0x008006b1                ADC_Time
-                0x008006b2                GSM_Tx
-                0x008006b3                GSM_State
-                0x008006b4                Tm_Sec
-                0x008006b5                ADC_Break
-                0x008006b7                CurrX
-                0x008006b8                Ballance
-                0x008006bc                MB_Master_MaxCycle
-                0x008006be                GPRS_Data_In
-                0x008006f0                IP_SendMask
-                0x008006f1                GSM_Modem
-                0x008006f2                Message
-                0x008006f5                TD_ADC
-                0x008006f6                KeyPressedCounter
-                0x008006fa                GSM_RX_FIFO_Begin
-                0x008006fb                MB_M_Try
-                0x008006fc                DigInput
-                0x00800705                MB_Frame_Sz
-                0x00800706                SMS_Data_Out
-                0x0080076a                ScanCycle
-                0x0080076b                CommandModeDestination
-                0x0080076c                KeyPressed
-                0x0080076d                GPRS_FlgSz_Out
-                0x0080076e                ScanCount
-                0x00800770                ADC_ReadFail
-                0x00800772                MB_Master_Cycle
-                0x00800774                MenuDepth
-                0x00800775                GSMTxSz
-                0x00800776                MB_Coil
-                0x0080077a                CurrFieldSize
-                0x0080077b                TrueTime_Year
-                0x0080077c                GPRS_FlgSz_In
-                0x0080077d                TWI_Phase
-                0x0080077e                LiveTime
-                0x00800782                SMS_FlgSz_Out
-                0x00800783                CurrLine
-                0x00800784                GSM_BER
-                0x00800785                Tm_Mon
-                0x00800786                MB_BitRate_RAM
-                0x00800787                ScanPerSec
-                0x00800789                GPRS_Protocol_Out
-                0x0080078a                GSM_Control
-                0x0080078b                DAC_Output
-                0x00800793                DigOutput
-                0x00800799                GSM_RxStr
-                0x008007fd                MB_InReg
-                0x0080089d                TWI_Error_Counter
-                0x0080089f                AppProtocol
-                0x008008a0                CurrLCD
-                0x008008a1                MenuStack
-                0x008008c9                KeyPressedNonFilter
-                0x008008ca                ADC_Chan
-                0x008008cb                GSM_RX_FIFOOverFlow
-                0x008008cc                TrueTime_Sec
-                0x008008cd                TrueTime_Mon
-                0x008008ce                TrueTime_Min
-                0x008008cf                MemFail
-                0x008008d0                Blink
-                0x008008d1                GSM_RX_FIFOMax
-                0x008008d2                Timer1s
-                0x008008d3                ADC_Input
-                0x008008e1                MB_M_Timeout
-                0x008008e2                MB_TimerFlag
-                0x008008e3                ADC_Fail
-                0x008008e5                SlaveOff
-                0x008008e9                GSM_MyIP
-                0x008008ed                GSM_ReStartN
-                0x008008ee                MB_CPT
-                0x008008fe                GPRS_Data_Out
-                0x008009fd                Y1
-                0x008009fe                MB_Input
-                0x00800a02                GSM_TxStr
-                0x00800b01                RxBufOverFlow
-                0x00800b02                GSM_ClientIP
-                0x00800b06                AnalogInput
-                0x00800b16                TrueTime_WDay
-                0x00800b17                Tm_MDay
-                0x00800b18                GSM_RxCharN
-                0x00800b19                MB_HoldReg
-                0x00800b21                GSM_TxCharN
-                0x00800b22                ADC_Phase
-                0x00800b23                MB_Frame
-                0x00800c23                Timer1hour
-                0x00800c25                ADC_Scale1
-                0x00800c2b                GSM_MultiCon
-                0x00800c2c                PROVIDE (__bss_end, .)
-                0x00010768                __data_load_start = LOADADDR (.data)
-                0x00010842                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008005c1      0x6b2 vmd2_3.o
+                0x008005c1                Tm_Hour
+                0x008005c2                MB_State
+                0x008005c3                BufStr
+                0x008005d8                TrueTime_Hour
+                0x008005d9                NextPage
+                0x008005db                GSM_Temp
+                0x008005dc                TempNum
+                0x008005dd                NotSummerTimeFlag
+                0x008005de                Tm_Year
+                0x008005df                MB_M_TimeOff
+                0x008005e0                MB_NativeAddr
+                0x008005e1                GSM_RX_FIFO
+                0x00800645                Temperature
+                0x00800651                Tm_Min
+                0x00800652                BackLightMode
+                0x00800653                GSM_RX_FIFO_End
+                0x00800654                CurrSlave
+                0x00800655                CurrQuery
+                0x00800656                TrueTime_MDay
+                0x00800657                Tm_WDay
+                0x00800658                LCD_Buf
+                0x008006ac                StrSize
+                0x008006ad                MB_M_Period
+                0x008006af                MB_SingleState
+                0x008006b0                Timer1min
+                0x008006b1                MaxScanCycle
+                0x008006b2                GSM_RSSI
+                0x008006b3                ADC_Time
+                0x008006b4                CallerState
+                0x008006b5                GSM_Tx
+                0x008006b6                Channels
+                0x008006f6                GSM_State
+                0x008006f7                Tm_Sec
+                0x008006f8                ADC_Break
+                0x008006fa                CurrX
+                0x008006fb                Ballance
+                0x008006ff                MB_Master_MaxCycle
+                0x00800701                GPRS_Data_In
+                0x00800733                IP_SendMask
+                0x00800734                GSM_Modem
+                0x00800735                Message
+                0x00800738                CurrentAbonent
+                0x00800739                TD_ADC
+                0x0080073a                KeyPressedCounter
+                0x0080073e                GSM_RX_FIFO_Begin
+                0x0080073f                MB_M_Try
+                0x00800740                DigInput
+                0x00800749                MB_Frame_Sz
+                0x0080074a                SMS_Data_Out
+                0x008007ae                ScanCycle
+                0x008007af                CommandModeDestination
+                0x008007b0                KeyPressed
+                0x008007b1                GPRS_FlgSz_Out
+                0x008007b2                ScanCount
+                0x008007b4                ADC_ReadFail
+                0x008007b6                CallerMessage
+                0x008007b8                MB_Master_Cycle
+                0x008007ba                MenuDepth
+                0x008007bb                GSMTxSz
+                0x008007bc                MB_Coil
+                0x008007c0                CurrFieldSize
+                0x008007c1                TrueTime_Year
+                0x008007c2                GPRS_FlgSz_In
+                0x008007c3                TWI_Phase
+                0x008007c4                LiveTime
+                0x008007c8                SMS_FlgSz_Out
+                0x008007c9                CurrLine
+                0x008007ca                GSM_BER
+                0x008007cb                Tm_Mon
+                0x008007cc                MB_BitRate_RAM
+                0x008007cd                ScanPerSec
+                0x008007cf                GPRS_Protocol_Out
+                0x008007d0                GSM_Control
+                0x008007d1                DAC_Output
+                0x008007d9                CurrentCall
+                0x008007da                DigOutput
+                0x008007e0                GSM_RxStr
+                0x00800844                MB_InReg
+                0x008008e4                TWI_Error_Counter
+                0x008008e6                AppProtocol
+                0x008008e7                CurrLCD
+                0x008008e8                MenuStack
+                0x00800910                KeyPressedNonFilter
+                0x00800911                ADC_Chan
+                0x00800912                GSM_RX_FIFOOverFlow
+                0x00800913                TrueTime_Sec
+                0x00800914                TrueTime_Mon
+                0x00800915                TrueTime_Min
+                0x00800916                MemFail
+                0x00800917                Blink
+                0x00800918                GSM_RX_FIFOMax
+                0x00800919                Timer1s
+                0x0080091a                ADC_Input
+                0x00800928                MB_M_Timeout
+                0x00800929                MB_TimerFlag
+                0x0080092a                ADC_Fail
+                0x0080092c                SlaveOff
+                0x00800930                GSM_MyIP
+                0x00800934                GSM_ReStartN
+                0x00800935                MB_CPT
+                0x00800945                GPRS_Data_Out
+                0x00800a44                Y1
+                0x00800a45                MB_Input
+                0x00800a49                GSM_TxStr
+                0x00800b48                RxBufOverFlow
+                0x00800b49                GSM_ClientIP
+                0x00800b4d                AnalogInput
+                0x00800b5d                TrueTime_WDay
+                0x00800b5e                Tm_MDay
+                0x00800b5f                GSM_RxCharN
+                0x00800b60                MB_HoldReg
+                0x00800b68                GSM_TxCharN
+                0x00800b69                ADC_Phase
+                0x00800b6a                MB_Frame
+                0x00800c6a                Timer1hour
+                0x00800c6c                ADC_Scale1
+                0x00800c72                GSM_MultiCon
+                0x00800c73                PROVIDE (__bss_end, .)
+                0x000109c8                __data_load_start = LOADADDR (.data)
+                0x00010aa2                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800c2c        0x0
-                0x00800c2c                PROVIDE (__noinit_start, .)
+.noinit         0x00800c73        0x0
+                0x00800c73                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800c2c                PROVIDE (__noinit_end, .)
-                0x00800c2c                _end = .
-                0x00800c2c                PROVIDE (__heap_start, .)
+                0x00800c73                PROVIDE (__noinit_end, .)
+                0x00800c73                _end = .
+                0x00800c73                PROVIDE (__heap_start, .)
 
-.eeprom         0x00810000      0x140
+.eeprom         0x00810000      0x1a0
  *(.eeprom*)
- .eeprom        0x00810000      0x140 vmd2_3.o
+ .eeprom        0x00810000      0x1a0 vmd2_3.o
                 0x00810117                ThermType
                 0x00810045                GPRS_currency
                 0x00810081                UDP_ServerIP
                 0x0081011d                ThermCorr
+                0x00810171                calling_retry_delay
                 0x008100c5                SMS_Number
                 0x00810009                GPRS_apn1
                 0x00810091                TCP_ServerIP
@@ -1650,9 +1675,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00810113                SMS_On
                 0x0081006d                GPRS_apn_psw
                 0x00810007                Vega_SN
+                0x00810151                calling_delay
                 0x00810059                GPRS_apn_user_name
                 0x008100b3                TCP_ClientIP
                 0x00810031                GPRS_checkballancerequest
+                0x00810131                debounceTimeout
                 0x008100a1                UDP_ServerPort
                 0x008100a9                TCP_ServerPort
                 0x00810114                DI_Invers
@@ -1661,7 +1688,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00810003                SummerTime
                 0x0081001d                GPRS_apn2
                 0x00810000                DateBackUp
-                0x00810140                __eeprom_end = .
+                0x008101a0                __eeprom_end = .
 
 .fuse
  *(.fuse)
@@ -1714,32 +1741,32 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00000000       0x20 vmd2_3.o
 
 .debug_pubnames
-                0x00000000     0x2ec6
+                0x00000000     0x30e0
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000     0x2ec6 vmd2_3.o
+                0x00000000     0x30e0 vmd2_3.o
 
-.debug_info     0x00000000     0xf8b9
+.debug_info     0x00000000     0xfbe8
  *(.debug_info)
- .debug_info    0x00000000     0xf8b9 vmd2_3.o
+ .debug_info    0x00000000     0xfbe8 vmd2_3.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000      0x72a
+.debug_abbrev   0x00000000      0x750
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x72a vmd2_3.o
+ .debug_abbrev  0x00000000      0x750 vmd2_3.o
 
-.debug_line     0x00000000     0x8c4f
+.debug_line     0x00000000     0x8dde
  *(.debug_line)
- .debug_line    0x00000000     0x8c4f vmd2_3.o
+ .debug_line    0x00000000     0x8dde vmd2_3.o
 
-.debug_frame    0x00000000     0x12b0
+.debug_frame    0x00000000     0x12f0
  *(.debug_frame)
- .debug_frame   0x00000000     0x12b0 vmd2_3.o
+ .debug_frame   0x00000000     0x12f0 vmd2_3.o
 
-.debug_str      0x00000000     0x3749
+.debug_str      0x00000000     0x392c
  *(.debug_str)
- .debug_str     0x00000000     0x3749 vmd2_3.o
-                               0x3a6e (size before relaxing)
+ .debug_str     0x00000000     0x392c vmd2_3.o
+                               0x3c8e (size before relaxing)
 
 .debug_loc      0x00000000     0x84aa
  *(.debug_loc)
