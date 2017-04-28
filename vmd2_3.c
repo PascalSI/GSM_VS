@@ -204,9 +204,198 @@ MenuLine Channel5[] = {
 MenuPage Channel5_Page = {SetMenu(Channel5), 0, NULL};
 
 
+InField Channel6_Name_InField[]			= { {Byte, &Channels[6].number, NULL, 0} };
+InField Channel6_DI_State_InField[]		= { {Byte, &Channels[6].DI_State, NULL, 0} };
+InField Channel6_Alarm_State_InField[]	= { {Byte, &Channels[6].Alarm_State, NULL, 0} };
+OutField Channel6_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[6]), 0, 65535, NULL, NULL, 0} };
+OutField Channel6_calling_delay_OutField[]			= { {EE_Word, &calling_delay[6], 0, 65535, NULL, NULL, 0} };
+OutField Channel6_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[6], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel6[] = {
+		{" Номер канала    {{{", Channel6_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel6_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel6_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel6_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel6_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel6_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel6_Page = {SetMenu(Channel6), 0, NULL};
+
+
+InField Channel7_Name_InField[]			= { {Byte, &Channels[7].number, NULL, 0} };
+InField Channel7_DI_State_InField[]		= { {Byte, &Channels[7].DI_State, NULL, 0} };
+InField Channel7_Alarm_State_InField[]	= { {Byte, &Channels[7].Alarm_State, NULL, 0} };
+OutField Channel7_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[7]), 0, 65535, NULL, NULL, 0} };
+OutField Channel7_calling_delay_OutField[]			= { {EE_Word, &calling_delay[7], 0, 65535, NULL, NULL, 0} };
+OutField Channel7_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[7], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel7[] = {
+		{" Номер канала    {{{", Channel7_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel7_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel7_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel7_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel7_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel7_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel7_Page = {SetMenu(Channel7), 0, NULL};
+
+
+InField Channel8_Name_InField[]			= { {Byte, &Channels[8].number, NULL, 0} };
+InField Channel8_DI_State_InField[]		= { {Byte, &Channels[8].DI_State, NULL, 0} };
+InField Channel8_Alarm_State_InField[]	= { {Byte, &Channels[8].Alarm_State, NULL, 0} };
+OutField Channel8_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[8]), 0, 65535, NULL, NULL, 0} };
+OutField Channel8_calling_delay_OutField[]			= { {EE_Word, &calling_delay[8], 0, 65535, NULL, NULL, 0} };
+OutField Channel8_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[8], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel8[] = {
+		{" Номер канала    {{{", Channel8_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel8_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel8_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel8_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel8_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel8_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel8_Page = {SetMenu(Channel8), 0, NULL};
+
+
+InField Channel9_Name_InField[]			= { {Byte, &Channels[9].number, NULL, 0} };
+InField Channel9_DI_State_InField[]		= { {Byte, &Channels[9].DI_State, NULL, 0} };
+InField Channel9_Alarm_State_InField[]	= { {Byte, &Channels[9].Alarm_State, NULL, 0} };
+OutField Channel9_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[9]), 0, 65535, NULL, NULL, 0} };
+OutField Channel9_calling_delay_OutField[]			= { {EE_Word, &calling_delay[9], 0, 65535, NULL, NULL, 0} };
+OutField Channel9_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[9], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel9[] = {
+		{" Номер канала    {{{", Channel9_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel9_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel9_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel9_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel9_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel9_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel9_Page = {SetMenu(Channel9), 0, NULL};
+
+
+InField Channel10_Name_InField[]			= { {Byte, &Channels[10].number, NULL, 0} };
+InField Channel10_DI_State_InField[]		= { {Byte, &Channels[10].DI_State, NULL, 0} };
+InField Channel10_Alarm_State_InField[]	= { {Byte, &Channels[10].Alarm_State, NULL, 0} };
+OutField Channel10_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[10]), 0, 65535, NULL, NULL, 0} };
+OutField Channel10_calling_delay_OutField[]			= { {EE_Word, &calling_delay[10], 0, 65535, NULL, NULL, 0} };
+OutField Channel10_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[10], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel10[] = {
+		{" Номер канала    {{{", Channel10_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel10_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel10_Alarm_State_InField, 		NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel10_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel10_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel10_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel10_Page = {SetMenu(Channel10), 0, NULL};
+
+
+InField Channel11_Name_InField[]			= { {Byte, &Channels[11].number, NULL, 0} };
+InField Channel11_DI_State_InField[]		= { {Byte, &Channels[11].DI_State, NULL, 0} };
+InField Channel11_Alarm_State_InField[]	= { {Byte, &Channels[11].Alarm_State, NULL, 0} };
+OutField Channel11_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[11]), 0, 65535, NULL, NULL, 0} };
+OutField Channel11_calling_delay_OutField[]			= { {EE_Word, &calling_delay[11], 0, 65535, NULL, NULL, 0} };
+OutField Channel11_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[11], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel11[] = {
+		{" Номер канала    {{{", Channel11_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel11_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel11_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel11_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel11_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel11_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel11_Page = {SetMenu(Channel11), 0, NULL};
+
+
+InField Channel12_Name_InField[]			= { {Byte, &Channels[12].number, NULL, 0} };
+InField Channel12_DI_State_InField[]		= { {Byte, &Channels[12].DI_State, NULL, 0} };
+InField Channel12_Alarm_State_InField[]		= { {Byte, &Channels[12].Alarm_State, NULL, 0} };
+OutField Channel12_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[12]), 0, 65535, NULL, NULL, 0} };
+OutField Channel12_calling_delay_OutField[]			= { {EE_Word, &calling_delay[12], 0, 65535, NULL, NULL, 0} };
+OutField Channel12_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[12], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel12[] = {
+		{" Номер канала    {{{", Channel12_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel12_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel12_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel12_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel12_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel12_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel12_Page = {SetMenu(Channel12), 0, NULL};
+
+
+InField Channel13_Name_InField[]			= { {Byte, &Channels[13].number, NULL, 0} };
+InField Channel13_DI_State_InField[]		= { {Byte, &Channels[13].DI_State, NULL, 0} };
+InField Channel13_Alarm_State_InField[]		= { {Byte, &Channels[13].Alarm_State, NULL, 0} };
+OutField Channel13_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[13]), 0, 65535, NULL, NULL, 0} };
+OutField Channel13_calling_delay_OutField[]			= { {EE_Word, &calling_delay[13], 0, 65535, NULL, NULL, 0} };
+OutField Channel13_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[13], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel13[] = {
+		{" Номер канала    {{{", Channel13_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel13_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel13_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel13_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel13_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel13_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel13_Page = {SetMenu(Channel13), 0, NULL};
+
+
+InField Channel14_Name_InField[]			= { {Byte, &Channels[14].number, NULL, 0} };
+InField Channel14_DI_State_InField[]		= { {Byte, &Channels[14].DI_State, NULL, 0} };
+InField Channel14_Alarm_State_InField[]		= { {Byte, &Channels[14].Alarm_State, NULL, 0} };
+OutField Channel14_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[14]), 0, 65535, NULL, NULL, 0} };
+OutField Channel14_calling_delay_OutField[]			= { {EE_Word, &calling_delay[14], 0, 65535, NULL, NULL, 0} };
+OutField Channel14_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[14], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel14[] = {
+		{" Номер канала    {{{", Channel14_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel14_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel14_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel14_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel14_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel14_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel14_Page = {SetMenu(Channel14), 0, NULL};
+
+
+InField Channel15_Name_InField[]			= { {Byte, &Channels[15].number, NULL, 0} };
+InField Channel15_DI_State_InField[]		= { {Byte, &Channels[15].DI_State, NULL, 0} };
+InField Channel15_Alarm_State_InField[]		= { {Byte, &Channels[15].Alarm_State, NULL, 0} };
+OutField Channel15_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[15]), 0, 65535, NULL, NULL, 0} };
+OutField Channel15_calling_delay_OutField[]			= { {EE_Word, &calling_delay[15], 0, 65535, NULL, NULL, 0} };
+OutField Channel15_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[15], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel15[] = {
+		{" Номер канала    {{{", Channel15_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel15_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel15_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel15_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel15_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel15_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel15_Page = {SetMenu(Channel15), 0, NULL};
+
 MenuLine ChannelSettingsList[] = {
 		{" Канал 1            ", .InnPage=&Channel0_Page},
-/*		{" Канал 2            ", .InnPage=&Channel1_Page},
+		{" Канал 2            ", .InnPage=&Channel1_Page},
 		{" Канал 3            ", .InnPage=&Channel2_Page},
 		{" Канал 4            ", .InnPage=&Channel3_Page},
 		{" Канал 5            ", .InnPage=&Channel4_Page},
@@ -220,19 +409,33 @@ MenuLine ChannelSettingsList[] = {
 		{" Канал 13           ", .InnPage=&Channel12_Page},
 		{" Канал 14           ", .InnPage=&Channel13_Page},
 		{" Канал 15           ", .InnPage=&Channel14_Page},
-		{" Канал 16           ", .InnPage=&Channel15_Page},*/
+		{" Канал 16           ", .InnPage=&Channel15_Page},
 	};
-//	MenuPage Menu0 = {SetMenu(Menu0List), 0, &Menu0,
+	MenuPage ChannelSettingsMenu = {SetMenu(ChannelSettingsList), 0, &Menu0,};
 
 
 	MenuPage MenuModem = {SetMenu(ListGSM), 0, &Menu0,};
 	InField Field_TransmitterState[]			= { {Byte, &Channels[0].DI_State, NULL, 0} };
+	OutField CallNum1_OutField[] = { {EE_Text, &CALL_Number[0], DIGIT, UKR_CAPS, NULL, NULL, 0} };
+	OutField CallNum2_OutField[] = { {EE_Text, &CALL_Number[1], DIGIT, UKR_CAPS, NULL, NULL, 0} };
+	OutField CallNum3_OutField[] = { {EE_Text, &CALL_Number[2], DIGIT, UKR_CAPS, NULL, NULL, 0} };
+
+	MenuLine PhoneNums[] = {
+		{" -Номера телефонов- ", .InnPage=&Menu0},
+		{" N1:+}}}}}}}}}}}}   ", NULL, CallNum1_OutField, NULL},
+		{" N2:+}}}}}}}}}}}}   ", NULL, CallNum2_OutField, NULL},
+		{" N3:+}}}}}}}}}}}}   ", NULL, CallNum3_OutField, NULL},
+	};
+	MenuPage PhoneNums_Page = {SetMenu(PhoneNums), 0, NULL};
+
+
 
 	MenuLine Menu0List[] = {
 		{" -GSM-сигнализатор- ", .InnPage=&Menu0},
 		{" Служебное          ", .InnPage=&MenuSyst},
 		{" Модем              ", .InnPage=&MenuModem},
-		{" Настройка каналов  ", .InnPage=&Channel0_Page},
+		{" Номера телефонов   ", .InnPage=&PhoneNums_Page},
+		{" Настройка каналов  ", .InnPage=&ChannelSettingsMenu},
 		{" Сост.oбзвона    {{{",  Field_TransmitterState},
 		
 	};
@@ -369,6 +572,25 @@ void ChannelProcessing(uint8_t chNumber){
 
 }
 
+void WriteDigOut(uint8_t DO_Num, uint8_t DO_Level)
+{
+	if(1 == DO_Level){
+		SetDigOut(DO_Num);
+	}else
+	{
+		ResDigOut(DO_Num);	
+	}
+}
+
+void ModbusAppCycle(){
+	MB_Input[0] = (DI_State(0)<<0)|(DI_State(1)<<1)|(DI_State(2)<<2)|(DI_State(3)<<3)|(DI_State(4)<<4)|(DI_State(5)<<5)|(DI_State(6)<<6)|(DI_State(7)<<7);
+	MB_Input[1] = (DI_State(8)<<0)|(DI_State(9)<<1)|(DI_State(10)<<2)|(DI_State(11)<<3)|(DI_State(12)<<4)|(DI_State(13)<<5)|(DI_State(14)<<6)|(DI_State(15)<<7);
+	WriteDigOut(0, (MB_Coil[0])&1);
+	WriteDigOut(1, ((MB_Coil[0])&(1<<1))>>1);
+	WriteDigOut(2, ((MB_Coil[0])&(1<<2))>>2);
+	WriteDigOut(3, ((MB_Coil[0])&(1<<3))>>3);
+}
+
 void
 ApplInit(void)
 {
@@ -388,6 +610,7 @@ ApplCycle(void)
 			ChannelProcessing(i);
 	}
 	CallerCycle();
+	ModbusAppCycle();
 }
 // ~~~~~~~~~~~
 void
