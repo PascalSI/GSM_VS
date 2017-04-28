@@ -71,9 +71,9 @@ uint16_t	MB_InReg[80];
 static uint8_t Caller_state = 0;
 
 
-#define DEBOUNCE_TIMEOUT_INIT { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20}
-#define CALLING_DELAY_INIT { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20}
-#define CALLING_RETRY_DELAY_INIT { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20}
+#define DEBOUNCE_TIMEOUT_INIT 	 { 2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2		}
+#define CALLING_DELAY_INIT 		 { 5, 	5, 	 5,   5,   5, 	5, 	 5,   5,   5,   5,   5,   5,   5,   5,   5,   5		}
+#define CALLING_RETRY_DELAY_INIT { 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300	}
 
 uint16_t debounceTimeout[16] 		EEMEM = DEBOUNCE_TIMEOUT_INIT;
 uint16_t calling_delay[16] 			EEMEM = CALLING_DELAY_INIT;
@@ -83,7 +83,7 @@ typedef struct{
 	uint8_t number;
 	uint8_t DI_State;
 	uint8_t Alarm_State;
-	uint8_t Timer;
+	uint8_t timer;
 }Channel;
 // ~~~~~~~~~~~
 
@@ -112,6 +112,98 @@ MenuLine Channel0[] = {
 };
 MenuPage Channel0_Page = {SetMenu(Channel0), 0, NULL};
 
+InField Channel1_Name_InField[]			= { {Byte, &Channels[1].number, NULL, 0} };
+InField Channel1_DI_State_InField[]		= { {Byte, &Channels[1].DI_State, NULL, 0} };
+InField Channel1_Alarm_State_InField[]	= { {Byte, &Channels[1].Alarm_State, NULL, 0} };
+OutField Channel1_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[1]), 0, 65535, NULL, NULL, 0} };
+OutField Channel1_calling_delay_OutField[]			= { {EE_Word, &calling_delay[1], 0, 65535, NULL, NULL, 0} };
+OutField Channel1_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[1], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel1[] = {
+		{" Номер канала    {{{", Channel1_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel1_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel1_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel1_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel1_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel1_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel1_Page = {SetMenu(Channel1), 0, NULL};
+
+InField Channel2_Name_InField[]			= { {Byte, &Channels[2].number, NULL, 0} };
+InField Channel2_DI_State_InField[]		= { {Byte, &Channels[2].DI_State, NULL, 0} };
+InField Channel2_Alarm_State_InField[]	= { {Byte, &Channels[2].Alarm_State, NULL, 0} };
+OutField Channel2_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[2]), 0, 65535, NULL, NULL, 0} };
+OutField Channel2_calling_delay_OutField[]			= { {EE_Word, &calling_delay[2], 0, 65535, NULL, NULL, 0} };
+OutField Channel2_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[2], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel2[] = {
+		{" Номер канала    {{{", Channel2_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel2_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel2_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel2_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel2_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel2_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel2_Page = {SetMenu(Channel2), 0, NULL};
+
+InField Channel3_Name_InField[]			= { {Byte, &Channels[3].number, NULL, 0} };
+InField Channel3_DI_State_InField[]		= { {Byte, &Channels[3].DI_State, NULL, 0} };
+InField Channel3_Alarm_State_InField[]	= { {Byte, &Channels[3].Alarm_State, NULL, 0} };
+OutField Channel3_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[3]), 0, 65535, NULL, NULL, 0} };
+OutField Channel3_calling_delay_OutField[]			= { {EE_Word, &calling_delay[3], 0, 65535, NULL, NULL, 0} };
+OutField Channel3_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[3], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel3[] = {
+		{" Номер канала    {{{", Channel3_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel3_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel3_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel3_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel3_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel3_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel3_Page = {SetMenu(Channel3), 0, NULL};
+
+
+InField Channel4_Name_InField[]			= { {Byte, &Channels[4].number, NULL, 0} };
+InField Channel4_DI_State_InField[]		= { {Byte, &Channels[4].DI_State, NULL, 0} };
+InField Channel4_Alarm_State_InField[]	= { {Byte, &Channels[4].Alarm_State, NULL, 0} };
+OutField Channel4_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[4]), 0, 65535, NULL, NULL, 0} };
+OutField Channel4_calling_delay_OutField[]			= { {EE_Word, &calling_delay[4], 0, 65535, NULL, NULL, 0} };
+OutField Channel4_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[4], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel4[] = {
+		{" Номер канала    {{{", Channel4_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel4_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel4_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel4_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel4_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel4_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel4_Page = {SetMenu(Channel4), 0, NULL};
+
+InField Channel5_Name_InField[]			= { {Byte, &Channels[5].number, NULL, 0} };
+InField Channel5_DI_State_InField[]		= { {Byte, &Channels[5].DI_State, NULL, 0} };
+InField Channel5_Alarm_State_InField[]	= { {Byte, &Channels[5].Alarm_State, NULL, 0} };
+OutField Channel5_debounceTimeout_OutField[]		= { {EE_Word, &(debounceTimeout[5]), 0, 65535, NULL, NULL, 0} };
+OutField Channel5_calling_delay_OutField[]			= { {EE_Word, &calling_delay[5], 0, 65535, NULL, NULL, 0} };
+OutField Channel5_calling_retry_delay_OutField[]	= { {EE_Word, &calling_retry_delay[5], 0, 65535, NULL, NULL, 0} };
+
+MenuLine Channel5[] = {
+		{" Номер канала    {{{", Channel5_Name_InField, 				NULL,	NULL},
+		{" Состояние входа {{{", Channel5_DI_State_InField, 			NULL,	NULL},
+		{" Состояние канала{{{", Channel5_Alarm_State_InField, 			NULL,	NULL},
+		{" Тантидребезг  }}}}}", NULL,									Channel5_debounceTimeout_OutField,	NULL},
+		{" Тдозвона      }}}}}", NULL,									Channel5_calling_delay_OutField,	NULL},
+		{" Тповт.дозвона }}}}}", NULL,									Channel5_calling_retry_delay_OutField,		NULL},
+		
+};
+MenuPage Channel5_Page = {SetMenu(Channel5), 0, NULL};
+
+
 MenuLine ChannelSettingsList[] = {
 		{" Канал 1            ", .InnPage=&Channel0_Page},
 /*		{" Канал 2            ", .InnPage=&Channel1_Page},
@@ -134,7 +226,7 @@ MenuLine ChannelSettingsList[] = {
 
 
 	MenuPage MenuModem = {SetMenu(ListGSM), 0, &Menu0,};
-	InField Field_TransmitterState[]			= { {Byte, &Channels[1].number, NULL, 0} };
+	InField Field_TransmitterState[]			= { {Byte, &Channels[0].DI_State, NULL, 0} };
 
 	MenuLine Menu0List[] = {
 		{" -GSM-сигнализатор- ", .InnPage=&Menu0},
@@ -154,12 +246,14 @@ enum{
 	CALLER_IDLE, CHECK_PHONE_BUSY, CALLER_ARBITR
 };
 uint8_t CallerState;
+uint8_t CallerBusyState;
 uint8_t CallerMessage[2];
 uint8_t CurrentAbonent;
 uint8_t CurrentCall;
 void Caller_StartCalling(uint8_t inputN){
 	CallerMessage[0]=1;
 	CallerMessage[1]=inputN;
+	CallerBusyState = 1;
 }
 
 void CallerCycle(){
@@ -170,12 +264,14 @@ void CallerCycle(){
 				CallerMessage[0] = 0;
 				CurrentAbonent = 0;
 				CurrentCall = 0;
+				CallerBusyState = 1;
 				Caller_state = CHECK_PHONE_BUSY;
 				break;
 			}
+			CallerBusyState = 0;
 			break;
 		case CHECK_PHONE_BUSY:
-			if(0==TransmitterState){
+			if(0 == TransmitterState){
 				Caller_state = CALLER_ARBITR;
 				break;
 			}else 
@@ -209,7 +305,67 @@ void CallerCycle(){
 	}
 }
 
+enum{
+	CHANNEL_PINSCAN,        //0
+	CHANNEL_WAIT_DEBOUNCE,	//1
+	CHANNEL_WRITE_LOG,		//2
+	CHANNEL_WAIT_CALL,		//3
+	CHANNEL_CALLING,		//4
+	CHANNEL_WAIT_RECALL		//5
+};
 void ChannelProcessing(uint8_t chNumber){
+	switch(Channels[chNumber].Alarm_State){
+		case CHANNEL_PINSCAN:
+			if(0 == Channels[chNumber].DI_State)
+			{
+				Channels[chNumber].Alarm_State = CHANNEL_WAIT_DEBOUNCE;
+				StartTimer16(Channels[chNumber].timer, erw(&debounceTimeout[chNumber])*100);
+				break;
+			}
+			break;
+		case CHANNEL_WAIT_DEBOUNCE:
+			if(1 == Channels[chNumber].DI_State)
+			{
+				Channels[chNumber].Alarm_State = CHANNEL_PINSCAN;
+				break;				
+			} 
+			if(Timer16Stopp(Channels[chNumber].timer)){
+				Channels[chNumber].Alarm_State = CHANNEL_WRITE_LOG;
+			}
+			break;
+		case CHANNEL_WRITE_LOG:
+				Channels[chNumber].Alarm_State = CHANNEL_WAIT_CALL;
+				StartTimer16(Channels[chNumber].timer, erw(&calling_delay[chNumber])*100);
+			break;
+		case CHANNEL_WAIT_CALL:
+			if(1 == Channels[chNumber].DI_State)
+			{
+				Channels[chNumber].Alarm_State = CHANNEL_PINSCAN;
+				break;				
+			} 
+			if(Timer16Stopp(Channels[chNumber].timer)){
+				Channels[chNumber].Alarm_State = CHANNEL_CALLING;
+			}
+			break;
+		case CHANNEL_CALLING:
+			if(0 == CallerBusyState){
+				Caller_StartCalling(Channels[chNumber].number);
+				Channels[chNumber].Alarm_State = CHANNEL_WAIT_RECALL;
+				StartTimer16(Channels[chNumber].timer, erw(&calling_retry_delay[chNumber])*100);
+			}
+			break;
+		case CHANNEL_WAIT_RECALL:
+			if(1 == Channels[chNumber].DI_State)
+			{
+				Channels[chNumber].Alarm_State = CHANNEL_PINSCAN;
+				break;				
+			} 
+			if(Timer16Stopp(Channels[chNumber].timer)){
+				Channels[chNumber].Alarm_State = CHANNEL_CALLING;
+			}			
+			break;
+
+	}
 
 }
 
@@ -218,6 +374,7 @@ ApplInit(void)
 {
 	for(int i=0; i<16; i++){
 		Channels[i].number = i+1;
+		Channels[i].timer = Timer16Alloc();
 	}
 
 }
@@ -227,16 +384,16 @@ void
 ApplCycle(void)
 {
 	for(uint8_t i=0; i<16; i++){
-		Channels[i].DI_State = DI_State(i-1);
+			Channels[i].DI_State = DI_State(i);
+			ChannelProcessing(i);
 	}
-
 	CallerCycle();
 }
 // ~~~~~~~~~~~
 void
 StartKey(void)
 {	
-	Caller_StartCalling(11);
+	
 }
 
 // ~~~~~~~~~~
